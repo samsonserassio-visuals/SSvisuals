@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect width="400" height="300" fill="#141414"/><text x="30%" y="55%" font-family="serif" font-size="48" fill="#F6F5F2">SS</text></svg></template>
+<x-dc>
+<helmet>
+<title>SS Visuals | Utah Photographer | Portraits, Couples, Automotive &amp; Events</title>
+<meta name="description" content="SS Visuals is a Utah-based photography studio by Samson Serassio — couples, families, engagements, automotive, and event photography.">
+<meta property="og:title" content="SS Visuals | Utah Photographer">
+<meta property="og:description" content="Photography by Samson Serassio — portraits, couples, families, automotive, and events across Utah.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&amp;family=Jost:wght@300;400;500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#F6F5F2;font-family:'Jost',sans-serif;text-wrap:pretty}
+a{color:#141414;text-decoration:none}
+a:hover{color:#4A4A47}
+input,textarea,select{font-family:'Jost',sans-serif;outline-offset:2px}
+input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid #4A4A47}
+</style>
+</helmet>
+<div ref="{{ setRootRef }}" style="width:100%;overflow:hidden;background:#F6F5F2">
+
+<header style="position:sticky;top:0;z-index:50;background:#F6F5F2;border-bottom:1px solid #E2E0D9;display:flex;align-items:center;justify-content:space-between;padding:14px clamp(20px,4vw,56px);gap:16px">
+  <a href="#top" style="display:flex;align-items:center;gap:12px">
+    <image-slot id="nav-logo" shape="circle" style="width:56px;height:56px;border:1px solid #AFAEA7;box-shadow:0 2px 6px rgba(20,20,20,0.15);flex-shrink:0" placeholder="Logo" aria-label="SS Visuals circular logo mark"></image-slot>
+    <span style="display:flex;flex-direction:column;line-height:1.15">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:14px;letter-spacing:0.08em;color:#141414">SS VISUALS</span>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.05em;color:#6E6C67">by Samson Serassio</span>
+    </span>
+  </a>
+  <sc-if value="{{ !isMobile }}" hint-placeholder-val="{{ true }}">
+    <nav style="display:flex;gap:32px;align-items:center">
+      <a href="#portfolio" style="font-size:14px">Portfolio</a>
+      <a href="#gallery" style="font-size:14px">Gallery</a>
+      <a href="#services" style="font-size:14px">Services &amp; Pricing</a>
+      <a href="#about" style="font-size:14px">About</a>
+      <a href="#sponsorship" style="font-size:14px">Sponsorship</a>
+      <a href="#contact" style="font-size:14px">Contact</a>
+    </nav>
+  </sc-if>
+  <div style="display:flex;align-items:center;gap:12px">
+    <sc-if value="{{ !isMobile }}" hint-placeholder-val="{{ true }}">
+      <a href="#" style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.05em;padding:10px 16px;border:1px solid #4A4A47;color:#141414;white-space:nowrap">Client Portal</a>
+    </sc-if>
+    <sc-if value="{{ !isMobile }}" hint-placeholder-val="{{ true }}">
+      <a href="#contact" style="background:#141414;color:#F6F5F2;padding:12px 22px;font-size:14px;white-space:nowrap">Book Your Session</a>
+    </sc-if>
+    <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
+      <button onclick="{{ toggleMenu }}" aria-label="Toggle menu" style="width:44px;height:44px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px;background:none;border:1px solid #141414;cursor:pointer;padding:0">
+        <span style="width:20px;height:2px;background:#141414"></span>
+        <span style="width:20px;height:2px;background:#141414"></span>
+        <span style="width:20px;height:2px;background:#141414"></span>
+      </button>
+    </sc-if>
+  </div>
+</header>
+
+<sc-if value="{{ isMobile &amp;&amp; menuOpen }}" hint-placeholder-val="{{ false }}">
+  <div style="background:#F6F5F2;border-bottom:1px solid #E2E0D9;padding:20px clamp(20px,4vw,56px);display:flex;flex-direction:column;gap:18px">
+    <a href="#portfolio" onclick="{{ toggleMenu }}" style="font-size:15px">Portfolio</a>
+    <a href="#gallery" onclick="{{ toggleMenu }}" style="font-size:15px">Gallery</a>
+    <a href="#services" onclick="{{ toggleMenu }}" style="font-size:15px">Services &amp; Pricing</a>
+    <a href="#about" onclick="{{ toggleMenu }}" style="font-size:15px">About</a>
+    <a href="#sponsorship" onclick="{{ toggleMenu }}" style="font-size:15px">Sponsorship</a>
+    <a href="#contact" onclick="{{ toggleMenu }}" style="font-size:15px">Contact</a>
+    <a href="#" style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#4A4A47">Client Portal</a>
+    <a href="#contact" onclick="{{ toggleMenu }}" style="background:#141414;color:#F6F5F2;padding:14px;text-align:left">Book Your Session</a>
+  </div>
+</sc-if>
+
+<section id="top" style="position:relative;min-height:92vh;display:flex;align-items:center;overflow:hidden">
+  <div style="{{ heroParallaxStyle }}">
+    <image-slot id="hero-bg" shape="rect" style="width:100%;height:100%" placeholder="Hero image — upload your work" aria-label="Full-bleed hero photograph" src="./img_2285-msjfm45y-mdk9.jpeg"></image-slot>
+  </div>
+  <div style="{{ heroOverlayStyle }}"></div>
+  <div style="position:relative;z-index:2;padding:0 clamp(20px,6vw,80px);max-width:920px">
+    <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.15em;text-transform:uppercase;color:#AFAEA7">Photography Studio · Utah</span>
+    <div style="display:flex;align-items:center;gap:24px;margin-top:24px;flex-wrap:wrap">
+      <image-slot id="hero-logo" shape="circle" style="width:120px;height:120px;border:2px solid #F6F5F2;box-shadow:0 4px 16px rgba(0,0,0,0.35);flex-shrink:0" placeholder="Logo" aria-label="SS Visuals circular logo mark, large"></image-slot>
+      <h1 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(48px,8vw,104px);line-height:1;margin:0;color:#F6F5F2">SS Visuals</h1>
+    </div>
+    <div style="margin-top:20px;display:flex;align-items:center;gap:14px">
+      <span style="font-family:'Jost',sans-serif;font-size:15px;color:#F6F5F2">Photography by</span>
+      <image-slot id="hero-signature" shape="rect" style="width:180px;height:56px" placeholder="Signature (SVG)" aria-label="Samson Serassio signature mark"></image-slot>
+    </div>
+    <p style="font-family:'Jost',sans-serif;font-weight:300;font-size:clamp(16px,2vw,20px);color:#EBEAE6;max-width:640px;margin-top:28px;line-height:1.6">Couples · Families · Engagements · Automotive · Events &amp; Quinceañeras</p>
+    <div style="display:flex;gap:16px;margin-top:36px;flex-wrap:wrap">
+      <a href="#contact" style="background:#F6F5F2;color:#141414;padding:15px 30px;font-size:15px">Book Your Session</a>
+      <a href="#portfolio" style="border:1px solid #F6F5F2;color:#F6F5F2;padding:15px 30px;font-size:15px">View Portfolio</a>
+    </div>
+  </div>
+</section>
+
+<div data-reveal="portfolio" style="{{ revealStyle.portfolio }}">
+<section id="portfolio" style="scroll-margin-top:80px;background:#EBEAE6;padding:96px clamp(20px,6vw,80px)">
+  <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:#4A4A47">Portfolio</span>
+  <h2 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(32px,4vw,52px);color:#141414;margin:12px 0 40px">Recent work</h2>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:2px;background:#141414">
+    <div style="position:relative;aspect-ratio:4/5;background:#EBEAE6">
+      <image-slot id="portfolio-couples" shape="rect" style="width:100%;height:100%" placeholder="Couples &amp; Portraits — upload your work" aria-label="Couples and portraits portfolio placeholder" src="uploads/DSC01245.JPG"></image-slot>
+      <span style="position:absolute;left:16px;bottom:16px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#F6F5F2;background:rgba(20,20,20,0.65);padding:6px 10px">Couples &amp; Portraits</span>
+    </div>
+    <div style="position:relative;aspect-ratio:4/5;background:#EBEAE6">
+      <image-slot id="portfolio-families" shape="rect" style="width:100%;height:100%" placeholder="Families — upload your work" aria-label="Families portfolio placeholder" src="uploads/DSC07385.JPG"></image-slot>
+      <span style="position:absolute;left:16px;bottom:16px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#F6F5F2;background:rgba(20,20,20,0.65);padding:6px 10px">Families</span>
+    </div>
+    <div style="position:relative;aspect-ratio:4/5;background:#EBEAE6">
+      <image-slot id="portfolio-events" shape="rect" style="width:100%;height:100%" placeholder="Events &amp; Quinceañeras — upload your work" aria-label="Events and quinceañeras portfolio placeholder"></image-slot>
+      <span style="position:absolute;left:16px;bottom:16px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#F6F5F2;background:rgba(20,20,20,0.65);padding:6px 10px">Events &amp; Quinceañeras</span>
+    </div>
+    <div style="position:relative;aspect-ratio:4/5;background:#EBEAE6">
+      <image-slot id="portfolio-automotive" shape="rect" style="width:100%;height:100%" placeholder="Automotive — upload your work" aria-label="Automotive portfolio placeholder" src="uploads/DSC03802.JPG"></image-slot>
+      <span style="position:absolute;left:16px;bottom:16px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#F6F5F2;background:rgba(20,20,20,0.65);padding:6px 10px">Automotive</span>
+    </div>
+    <div style="position:relative;aspect-ratio:4/5;background:#EBEAE6">
+      <image-slot id="portfolio-extra1" shape="rect" style="width:100%;height:100%" placeholder="Upload your work" aria-label="Additional portfolio placeholder" src="./dsc03709-msjydsuh-2mj0.jpg"></image-slot>
+    </div>
+    <div style="position:relative;aspect-ratio:4/5;background:#EBEAE6">
+      <image-slot id="portfolio-extra2" shape="rect" style="width:100%;height:100%" placeholder="Upload your work" aria-label="Additional portfolio placeholder" src="uploads/DSC04845.jpg"></image-slot>
+    </div>
+  </div>
+</section>
+</div>
+
+<div data-reveal="gallery" style="{{ revealStyle.gallery }}">
+<section id="gallery" style="scroll-margin-top:80px;background:#F6F5F2;padding:96px clamp(20px,6vw,80px)">
+  <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:16px">
+    <div>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:#4A4A47">Gallery</span>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(32px,4vw,52px);color:#141414;margin:12px 0 0">Client gallery</h2>
+    </div>
+    <button onclick="{{ openGalleryModal }}" style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.05em;padding:10px 16px;border:1px solid #4A4A47;background:none;color:#141414;cursor:pointer;white-space:nowrap">Manage Gallery</button>
+  </div>
+  <sc-if value="{{ hasPhotos }}" hint-placeholder-val="{{ false }}">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:2px;background:#141414;margin-top:40px">
+      <sc-for list="{{ photos }}" as="photo" hint-placeholder-count="0">
+        <div style="{{ photo.bgStyle }}" role="img" aria-label="Gallery photo"></div>
+      </sc-for>
+    </div>
+  </sc-if>
+  <sc-if value="{{ !hasPhotos }}" hint-placeholder-val="{{ true }}">
+    <p style="font-family:'Jost',sans-serif;font-size:15px;color:#6E6C67;margin-top:32px">No photos yet — check back soon.</p>
+  </sc-if>
+</section>
+</div>
+
+<sc-if value="{{ modalOpen }}" hint-placeholder-val="{{ false }}">
+  <div onclick="{{ closeGalleryModal }}" style="position:fixed;inset:0;z-index:100;background:rgba(20,20,20,0.6);display:flex;align-items:center;justify-content:center;padding:20px">
+    <div onclick="{{ stopClick }}" style="background:#F6F5F2;width:100%;max-width:520px;max-height:86vh;overflow:auto;padding:32px;position:relative">
+      <button onclick="{{ closeGalleryModal }}" aria-label="Close" style="position:absolute;top:16px;right:16px;background:none;border:none;font-size:20px;cursor:pointer;color:#141414;line-height:1">×</button>
+      <sc-if value="{{ !unlocked }}" hint-placeholder-val="{{ true }}">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:#4A4A47">Gallery Access</span>
+        <h3 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:26px;color:#141414;margin:10px 0 20px">Enter password</h3>
+        <form onsubmit="{{ submitPassword }}" style="display:flex;flex-direction:column;gap:14px">
+          <input type="password" value="{{ passwordInput }}" onchange="{{ handlePasswordChange }}" placeholder="Password" style="padding:12px;border:1px solid #E2E0D9;background:#F6F5F2;color:#141414;font-size:14px">
+          <sc-if value="{{ passwordError }}" hint-placeholder-val="{{ false }}">
+            <span style="font-size:13px;color:#B3453B">Incorrect password.</span>
+          </sc-if>
+          <button type="submit" style="background:#141414;color:#F6F5F2;padding:13px 24px;font-size:14px;border:none;cursor:pointer;align-self:flex-start">Unlock</button>
+        </form>
+      </sc-if>
+      <sc-if value="{{ unlocked }}" hint-placeholder-val="{{ false }}">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:#4A4A47">Gallery Access</span>
+        <h3 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:26px;color:#141414;margin:10px 0 20px">Manage photos</h3>
+        <label style="display:flex;flex-direction:column;gap:8px;padding:24px;border:1px dashed #AFAEA7;text-align:center;cursor:pointer;font-family:'Jost',sans-serif;font-size:14px;color:#4A4A47">
+          Click to upload photos
+          <input type="file" accept="image/*" multiple="" onchange="{{ handleFileUpload }}" style="display:none">
+        </label>
+        <sc-if value="{{ galleryError }}" hint-placeholder-val="{{ false }}">
+          <p style="font-size:13px;color:#B3453B;margin:10px 0 0">Storage is full — that last photo wasn't saved. Remove a few photos, or keep the gallery smaller (this browser-based storage has limited space).</p>
+        </sc-if>
+        <sc-if value="{{ hasPhotos }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px;margin-top:20px">
+            <sc-for list="{{ photos }}" as="photo" hint-placeholder-count="0">
+              <div style="position:relative;aspect-ratio:1/1;background:#EBEAE6">
+                <div style="{{ photo.bgStyle }}" role="img" aria-label="Gallery photo"></div>
+                <button onclick="{{ photo.remove }}" aria-label="Remove photo" style="position:absolute;top:4px;right:4px;width:22px;height:22px;background:rgba(20,20,20,0.75);color:#F6F5F2;border:none;font-size:14px;cursor:pointer;line-height:1">×</button>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+        <button onclick="{{ closeGalleryModal }}" style="margin-top:24px;background:#141414;color:#F6F5F2;padding:12px 22px;font-size:14px;border:none;cursor:pointer">Done</button>
+      </sc-if>
+    </div>
+  </div>
+</sc-if>
+
+<div data-reveal="services" style="{{ revealStyle.services }}">
+<section id="services" style="scroll-margin-top:80px;background:#F6F5F2;padding:96px clamp(20px,6vw,80px)">
+  <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:#4A4A47">Services &amp; Pricing</span>
+  <h2 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(32px,4vw,52px);color:#141414;margin:12px 0 40px">Session packages</h2>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px">
+    <sc-for list="{{ services }}" as="svc" hint-placeholder-count="5">
+      <div style="background:#F6F5F2;border:1px solid #E2E0D9;display:flex;flex-direction:column" style-hover="transform:translateY(-6px);box-shadow:0 14px 28px rgba(20,20,20,0.12)">
+        <sc-if value="{{ svc.id === 'couples' }}" hint-placeholder-val="{{ false }}">
+          <image-slot id="svc-{{ svc.id }}" shape="rect" style="width:100%;aspect-ratio:4/3" placeholder="{{ svc.title }}" aria-label="{{ svc.title }} placeholder photo" src="uploads/DSC00817.JPG"></image-slot>
+        </sc-if>
+        <sc-if value="{{ svc.id !== 'couples' }}" hint-placeholder-val="{{ true }}">
+          <image-slot id="svc-{{ svc.id }}" shape="rect" style="width:100%;aspect-ratio:4/3" placeholder="{{ svc.title }}" aria-label="{{ svc.title }} placeholder photo"></image-slot>
+        </sc-if>
+        <div style="padding:24px;display:flex;flex-direction:column;gap:8px;flex:1">
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#4A4A47">{{ svc.price }}</span>
+          <h3 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:22px;margin:0;color:#141414">{{ svc.title }}</h3>
+          <p style="font-family:'Jost',sans-serif;font-size:14px;line-height:1.6;color:#6E6C67;flex:1;margin:0">{{ svc.desc }}</p>
+          <a href="#contact" style="margin-top:12px;background:#141414;color:#F6F5F2;padding:10px 18px;font-size:13px;text-align:left;align-self:flex-start">{{ svc.cta }}</a>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+  <p style="font-family:'Jost',sans-serif;font-size:13px;color:#6E6C67;margin-top:32px">All prices start here. Custom packages are available on request.</p>
+</section>
+</div>
+
+<div data-reveal="about" style="{{ revealStyle.about }}">
+<section id="about" style="scroll-margin-top:80px;background:#EBEAE6;padding:96px clamp(20px,6vw,80px)">
+  <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:clamp(32px,5vw,72px);align-items:center">
+    <image-slot id="about-profile" shape="rect" style="width:100%;aspect-ratio:4/5" placeholder="Profile photo" aria-label="Samson Serassio profile photo placeholder"></image-slot>
+    <div>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:#4A4A47">About</span>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(30px,3.6vw,44px);color:#141414;margin:12px 0 20px">Samson Serassio</h2>
+      <p style="font-family:'Jost',sans-serif;font-size:16px;line-height:1.75;color:#4A4A47;max-width:56ch;margin:0">Samson Serassio is a Utah-based photographer working across portraits, couples, families, automotive, and events. Every session is shaped around the people in front of the camera — attention over process, so the images feel like the people in them.</p>
+      <image-slot id="about-signature" shape="rect" style="width:160px;height:50px;margin-top:24px" placeholder="Signature (SVG)" aria-label="Samson Serassio signature sign-off"></image-slot>
+    </div>
+  </div>
+</section>
+</div>
+
+<div data-reveal="sponsorship" style="{{ revealStyle.sponsorship }}">
+<section id="sponsorship" style="scroll-margin-top:80px;background:#141414;color:#F6F5F2;padding:96px clamp(20px,6vw,80px)">
+  <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:#AFAEA7">Sponsorship</span>
+  <h2 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(32px,4vw,52px);color:#F6F5F2;margin:12px 0 20px">Help a new studio get off the ground</h2>
+  <p style="font-family:'Jost',sans-serif;font-size:16px;line-height:1.75;color:#EBEAE6;max-width:60ch;margin:0">SS Visuals is a solo photography studio just starting out. If you've enjoyed the work here, or want to back a new local business, a contribution of any size helps cover gear, travel, and studio costs while it grows.</p>
+  <div style="display:flex;gap:16px;margin-top:32px;flex-wrap:wrap">
+    <sc-if value="{{ sponsorshipVenmo }}" hint-placeholder-val="{{ false }}">
+      <a href="{{ sponsorshipVenmo }}" target="_blank" rel="noopener" style="background:#F6F5F2;color:#141414;padding:14px 26px;font-size:14px">Venmo</a>
+    </sc-if>
+    <sc-if value="{{ sponsorshipCashApp }}" hint-placeholder-val="{{ false }}">
+      <a href="{{ sponsorshipCashApp }}" target="_blank" rel="noopener" style="border:1px solid #F6F5F2;color:#F6F5F2;padding:14px 26px;font-size:14px">Cash App</a>
+    </sc-if>
+    <sc-if value="{{ sponsorshipPaypal }}" hint-placeholder-val="{{ false }}">
+      <a href="{{ sponsorshipPaypal }}" target="_blank" rel="noopener" style="border:1px solid #F6F5F2;color:#F6F5F2;padding:14px 26px;font-size:14px">PayPal</a>
+    </sc-if>
+  </div>
+  <sc-if value="{{ !sponsorshipVenmo &amp;&amp; !sponsorshipCashApp &amp;&amp; !sponsorshipPaypal }}" hint-placeholder-val="{{ true }}">
+    <p style="font-family:'Jost',sans-serif;font-size:13px;color:#AFAEA7;margin-top:28px">No donation links set up yet — add your Venmo, Cash App, or PayPal link in Tweaks.</p>
+  </sc-if>
+</section>
+</div>
+
+<div data-reveal="testimonials" style="{{ revealStyle.testimonials }}">
+<section id="testimonials" style="scroll-margin-top:80px;background:#F6F5F2;padding:96px clamp(20px,6vw,80px)">
+  <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:#4A4A47">Testimonials</span>
+  <h2 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(32px,4vw,52px);color:#141414;margin:12px 0 40px">What clients say</h2>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2px;background:#E2E0D9">
+    <div style="background:#F6F5F2;padding:32px;display:flex;flex-direction:column;gap:16px" style-hover="transform:translateY(-4px)">
+      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:19px;line-height:1.6;color:#141414;margin:0">"He made the whole afternoon feel easy. We stopped noticing the camera."</p>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#4A4A47">Engagement Session</span>
+    </div>
+    <div style="background:#F6F5F2;padding:32px;display:flex;flex-direction:column;gap:16px" style-hover="transform:translateY(-4px)">
+      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:19px;line-height:1.6;color:#141414;margin:0">"Every photo looked like our family, not a posed version of it."</p>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#4A4A47">Family Session</span>
+    </div>
+    <div style="background:#F6F5F2;padding:32px;display:flex;flex-direction:column;gap:16px" style-hover="transform:translateY(-4px)">
+      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:19px;line-height:1.6;color:#141414;margin:0">"He knew exactly which angle would make the car look the way it does in person."</p>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#4A4A47">Automotive Photography</span>
+    </div>
+  </div>
+</section>
+</div>
+
+<div data-reveal="instagram" style="{{ revealStyle.instagram }}">
+<section id="instagram" style="scroll-margin-top:80px;background:#EBEAE6;padding:96px clamp(20px,6vw,80px)">
+  <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:12px">
+    <div>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:#4A4A47">Instagram</span>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(28px,3.4vw,40px);color:#141414;margin:12px 0 0">@ss.visuals</h2>
+    </div>
+    <a href="#" style="font-family:'IBM Plex Mono',monospace;font-size:13px;border-bottom:1px solid #141414;padding-bottom:2px">View on Instagram →</a>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:2px;background:#141414;margin-top:32px">
+    <sc-for list="{{ instaTiles }}" as="n" hint-placeholder-count="6">
+      <image-slot id="insta-{{ n }}" shape="rect" style="width:100%;aspect-ratio:1/1" placeholder="Instagram post" aria-label="Instagram grid placeholder"></image-slot>
+    </sc-for>
+  </div>
+</section>
+</div>
+
+<div data-reveal="contact" style="{{ revealStyle.contact }}">
+<section id="contact" style="scroll-margin-top:80px;background:#F6F5F2;padding:96px clamp(20px,6vw,80px)">
+  <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:#4A4A47">Contact</span>
+  <h2 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(32px,4vw,52px);color:#141414;margin:12px 0 40px">Book your session</h2>
+  <div style="display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:clamp(32px,5vw,64px)">
+    <sc-if value="{{ !bookingData }}" hint-placeholder-val="{{ true }}">
+    <form onsubmit="{{ handleBookingSubmit }}" style="display:flex;flex-direction:column;gap:18px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:#4A4A47">First name
+          <input type="text" name="firstName" required="" style="padding:12px;border:1px solid #E2E0D9;background:#F6F5F2;color:#141414;font-size:14px">
+        </label>
+        <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:#4A4A47">Last name
+          <input type="text" name="lastName" required="" style="padding:12px;border:1px solid #E2E0D9;background:#F6F5F2;color:#141414;font-size:14px">
+        </label>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:#4A4A47">Phone
+          <input type="tel" name="phone" required="" style="padding:12px;border:1px solid #E2E0D9;background:#F6F5F2;color:#141414;font-size:14px">
+        </label>
+        <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:#4A4A47">Email
+          <input type="email" name="email" required="" style="padding:12px;border:1px solid #E2E0D9;background:#F6F5F2;color:#141414;font-size:14px">
+        </label>
+      </div>
+      <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:#4A4A47">Session type
+        <select name="service" required="" value="{{ selectedService }}" onchange="{{ handleServiceChange }}" style="padding:12px;border:1px solid #E2E0D9;background:#F6F5F2;color:#141414;font-size:14px">
+          <sc-for list="{{ services }}" as="svc" hint-placeholder-count="5">
+            <option value="{{ svc.id }}">{{ svc.title }} — {{ svc.price }}</option>
+          </sc-for>
+        </select>
+      </label>
+      <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:#4A4A47">Where would you like the shoot?
+        <select name="location" required="" style="padding:12px;border:1px solid #E2E0D9;background:#F6F5F2;color:#141414;font-size:14px">
+          <option value="">Select a location type</option>
+          <option>At my home</option>
+          <option>Public / outdoor backdrop</option>
+          <option>Studio</option>
+          <option>Other — I'll describe it in the message</option>
+        </select>
+        <span style="font-size:12px;color:#6E6C67;font-weight:400">Price can vary by location. Local travel is included — for out-of-state sessions, you cover the flight and lodging.</span>
+      </label>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:#4A4A47">Preferred date
+          <input type="date" name="date" required="" style="padding:12px;border:1px solid #E2E0D9;background:#F6F5F2;color:#141414;font-size:14px">
+        </label>
+        <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:#4A4A47">Preferred time
+          <select name="time" required="" style="padding:12px;border:1px solid #E2E0D9;background:#F6F5F2;color:#141414;font-size:14px">
+            <option value="">Select a time</option>
+            <option>9:00 AM</option>
+            <option>11:00 AM</option>
+            <option>1:00 PM</option>
+            <option>3:00 PM</option>
+            <option>5:00 PM</option>
+          </select>
+        </label>
+      </div>
+      <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:#4A4A47">Message
+        <textarea name="message" rows="4" style="padding:12px;border:1px solid #E2E0D9;background:#F6F5F2;color:#141414;font-size:14px;resize:vertical"></textarea>
+      </label>
+      <div style="background:#EBEAE6;padding:16px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+        
+        <span style="font-family:'Jost',sans-serif;font-size:13px;color:#4A4A47">Deposit due to book ({{ depositPercent }}% of {{ selectedSvc.price }} + {{ processingFeePercent }}% processing fee)</span><span style="font-family:'IBM Plex Mono',monospace;font-size:16px;color:#141414">${{ depositAmount }}</span>
+      </div>
+      <button type="submit" style="background:#141414;color:#F6F5F2;padding:15px 28px;font-size:14px;border:none;cursor:pointer;align-self:flex-start">Request Booking</button>
+    </form>
+    </sc-if>
+    <sc-if value="{{ bookingData }}" hint-placeholder-val="{{ false }}">
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#4A4A47">Request ready</span>
+        <p style="font-family:'Jost',sans-serif;font-size:15px;line-height:1.6;color:#4A4A47;margin-top:8px">Send your request through, then pay the deposit to lock in your date.</p>
+      </div>
+      <a href="{{ bookingData.mailtoHref }}" style="background:#141414;color:#F6F5F2;padding:15px 24px;font-size:14px;text-align:left">Email this request</a>
+      <a href="{{ bookingData.smsHref }}" style="border:1px solid #141414;color:#141414;padding:15px 24px;font-size:14px;text-align:left">Text this request</a>
+      <sc-if value="{{ bookingData.paymentLink }}" hint-placeholder-val="{{ false }}">
+        <a href="{{ bookingData.paymentLink }}" target="_blank" rel="noopener" style="background:#4A4A47;color:#F6F5F2;padding:15px 24px;font-size:14px;text-align:left">Pay deposit — ${{ bookingData.depositAmount }}</a>
+      </sc-if>
+      <sc-if value="{{ !bookingData.paymentLink }}" hint-placeholder-val="{{ true }}">
+        <p style="font-family:'Jost',sans-serif;font-size:13px;color:#6E6C67;margin:0">Deposit payment link isn't set up yet — add a Stripe, Square, or PayPal link in Tweaks once your account is ready.</p>
+      </sc-if>
+      <button onclick="{{ resetBooking }}" style="background:none;border:none;color:#4A4A47;font-size:13px;text-decoration:underline;cursor:pointer;padding:0;text-align:left;align-self:flex-start">Start over</button>
+    </div>
+    </sc-if>
+    <div style="background:#EBEAE6;padding:32px;display:flex;flex-direction:column;gap:22px;align-self:start">
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#4A4A47">Phone</span>
+        <a href="tel:+18019183719" style="font-size:16px;color:#141414">(801) 918-3719</a>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#4A4A47">Email</span>
+        <a href="mailto:Samson.serassio@gmail.com" style="font-size:16px;color:#141414">Samson.serassio@gmail.com</a>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#4A4A47">Location</span>
+        <span style="font-size:16px;color:#141414">Utah, SLC</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#4A4A47">Response time</span>
+        <span style="font-size:16px;color:#141414">Within 1–2 business days</span>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<sc-if value="{{ chatOpen }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;bottom:96px;right:24px;z-index:210;width:min(320px,calc(100vw - 48px));max-height:70vh;background:#F6F5F2;border:1px solid #141414;box-shadow:0 12px 32px rgba(20,20,20,0.25);display:flex;flex-direction:column">
+    <div style="background:#141414;color:#F6F5F2;padding:16px 18px;display:flex;justify-content:space-between;align-items:center">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.08em;text-transform:uppercase">EV — My Assistant</span>
+      <div style="display:flex;align-items:center;gap:14px">
+        <button onclick="{{ openHistory }}" aria-label="Chat history" style="background:none;border:none;color:#AFAEA7;font-size:11px;letter-spacing:0.05em;cursor:pointer;font-family:'IBM Plex Mono',monospace">History</button>
+        <button onclick="{{ toggleChat }}" aria-label="Close chat" style="background:none;border:none;color:#F6F5F2;font-size:18px;cursor:pointer;line-height:1">×</button>
+      </div>
+    </div>
+    <div style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;min-height:180px">
+      <sc-for list="{{ chatMessages }}" as="msg" hint-placeholder-count="1">
+        <div style="{{ msg.bubbleStyle }}">{{ msg.text }}</div>
+      </sc-for>
+    </div>
+    <div style="padding:14px;border-top:1px solid #E2E0D9;display:flex;flex-direction:column;gap:10px">
+      <sc-if value="{{ leadPhone }}" hint-placeholder-val="{{ false }}">
+        <a href="{{ leadSmsHref }}" style="background:#4A4A47;color:#F6F5F2;padding:11px 16px;font-size:12px;text-align:center">Text Samson your information to get a consultation</a>
+      </sc-if>
+      <a href="#contact" onclick="{{ handleChatBookClick }}" style="background:#141414;color:#F6F5F2;padding:12px 16px;font-size:13px;text-align:center">Go to Booking Form</a>
+      <form onsubmit="{{ handleChatSend }}" style="display:flex;gap:8px">
+        <input type="text" value="{{ chatInput }}" onchange="{{ handleChatInputChange }}" placeholder="Ask something…" style="flex:1;padding:10px;border:1px solid #E2E0D9;background:#FFFFFF;color:#141414;font-size:13px">
+        <button type="submit" disabled="{{ chatLoading }}" style="background:#141414;color:#F6F5F2;border:none;padding:10px 14px;font-size:13px;cursor:pointer">{{ chatSendLabel }}</button>
+      </form>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ historyOpen }}" hint-placeholder-val="{{ false }}">
+  <div onclick="{{ closeHistory }}" style="position:fixed;inset:0;z-index:220;background:rgba(20,20,20,0.6);display:flex;align-items:center;justify-content:center;padding:20px">
+    <div onclick="{{ stopClick }}" style="background:#F6F5F2;width:100%;max-width:520px;max-height:80vh;overflow:auto;padding:32px;position:relative">
+      <button onclick="{{ closeHistory }}" aria-label="Close" style="position:absolute;top:16px;right:16px;background:none;border:none;font-size:20px;cursor:pointer;color:#141414;line-height:1">×</button>
+      <sc-if value="{{ !historyUnlocked }}" hint-placeholder-val="{{ true }}">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:#4A4A47">Chat History</span>
+        <h3 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:26px;color:#141414;margin:10px 0 20px">Enter password</h3>
+        <form onsubmit="{{ submitHistoryPassword }}" style="display:flex;flex-direction:column;gap:14px">
+          <input type="password" value="{{ historyPasswordInput }}" onchange="{{ handleHistoryPasswordChange }}" placeholder="Password" style="padding:12px;border:1px solid #E2E0D9;background:#F6F5F2;color:#141414;font-size:14px">
+          <sc-if value="{{ historyPasswordError }}" hint-placeholder-val="{{ false }}">
+            <span style="font-size:13px;color:#B3453B">Incorrect password.</span>
+          </sc-if>
+          <button type="submit" style="background:#141414;color:#F6F5F2;padding:13px 24px;font-size:14px;border:none;cursor:pointer;align-self:flex-start">Unlock</button>
+        </form>
+      </sc-if>
+      <sc-if value="{{ historyUnlocked }}" hint-placeholder-val="{{ false }}">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:#4A4A47">Chat History</span>
+        <h3 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:26px;color:#141414;margin:10px 0 20px">Past conversations</h3>
+        <p style="font-family:'Jost',sans-serif;font-size:12px;color:#6E6C67;margin:-12px 0 20px">Only shows conversations from this browser — chats from visitors on other devices aren't visible here.</p>
+        <sc-if value="{{ !hasHistory }}" hint-placeholder-val="{{ false }}">
+          <p style="font-family:'Jost',sans-serif;font-size:14px;color:#6E6C67">No past conversations saved yet.</p>
+        </sc-if>
+        <sc-for list="{{ historySessions }}" as="session" hint-placeholder-count="0">
+          <div style="border:1px solid #E2E0D9;margin-bottom:16px">
+            <div style="background:#EBEAE6;padding:12px 16px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px">
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#4A4A47">{{ session.label }}</span>
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#4A4A47">{{ session.dateLabel }}</span>
+            </div>
+            <div style="padding:14px 16px;display:flex;flex-direction:column;gap:10px">
+              <sc-for list="{{ session.messages }}" as="msg" hint-placeholder-count="0">
+                <div style="{{ msg.bubbleStyle }}">{{ msg.text }}</div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+      </sc-if>
+    </div>
+  </div>
+</sc-if>
+<button onclick="{{ toggleChat }}" aria-label="Open chat" style="position:fixed;bottom:24px;right:24px;z-index:210;width:60px;height:60px;border-radius:50%;background:#141414;color:#F6F5F2;border:none;cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:{{ chatButtonFontSize }};box-shadow:0 8px 20px rgba(20,20,20,0.3)">{{ chatButtonLabel }}</button>
+
+<footer style="background:#141414;color:#AFAEA7;padding:56px clamp(20px,6vw,80px) 32px">
+  <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:32px;padding-bottom:32px;border-bottom:1px solid #4A4A47">
+    <div style="display:flex;align-items:center;gap:14px">
+      <image-slot id="footer-logo" shape="circle" style="width:52px;height:52px;border:1px solid #AFAEA7" placeholder="Logo" aria-label="SS Visuals logo mark"></image-slot>
+      <image-slot id="footer-signature" shape="rect" style="width:140px;height:40px" placeholder="Signature" aria-label="Samson Serassio signature"></image-slot>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;font-size:14px">
+      <a href="tel:+18019183719" style="color:#F6F5F2">(801) 918-3719</a>
+      <a href="mailto:Samson.serassio@gmail.com" style="color:#F6F5F2">Samson.serassio@gmail.com</a>
+      <span style="color:#AFAEA7">Utah, Salt Lake City</span>
+    </div>
+  </div>
+  <p style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#AFAEA7;margin-top:24px">© 2026 SS Visuals. All rights reserved.</p>
+</footer>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;heroOverlayOpacity&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:0.55,&quot;min&quot;:0,&quot;max&quot;:0.85,&quot;step&quot;:0.05,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Hero&quot;},&quot;enableParallax&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Hero&quot;},&quot;depositPercent&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:50,&quot;min&quot;:0,&quot;max&quot;:100,&quot;step&quot;:5,&quot;unit&quot;:&quot;%&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Booking&quot;},&quot;processingFeePercent&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:15,&quot;min&quot;:0,&quot;max&quot;:30,&quot;step&quot;:1,&quot;unit&quot;:&quot;%&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Booking&quot;},&quot;studioEmail&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Samson.serassio@gmail.com&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Booking&quot;},&quot;studioPhone&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;8019183719&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Booking&quot;},&quot;paymentLinkCouples&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Payment links&quot;},&quot;paymentLinkFamilies&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Payment links&quot;},&quot;paymentLinkEngagement&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Payment links&quot;},&quot;paymentLinkAutomotive&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Payment links&quot;},&quot;paymentLinkEvents&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Payment links&quot;},&quot;sponsorshipVenmo&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Sponsorship links&quot;},&quot;sponsorshipCashApp&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Sponsorship links&quot;},&quot;sponsorshipPaypal&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Sponsorship links&quot;}}">
+class Component extends DCLogic {
+  galleryPassword = '2001Samson';
+
+  services = [
+    { id: 'couples', priceNum: 350, price: 'Starting at $350', title: 'Couples & Portraits', desc: 'Professional portrait and couples sessions focused on authentic connection, personality, and timeless images.', cta: 'Book Now' },
+    { id: 'families', priceNum: 400, price: 'Starting at $400', title: 'Families', desc: 'Natural family photography capturing genuine moments and relationships.', cta: 'Book Now' },
+    { id: 'engagement', priceNum: 450, price: 'Starting at $450', title: 'Engagement Sessions', desc: 'Romantic engagement photography designed to capture the season before marriage.', cta: 'Book Now' },
+    { id: 'automotive', priceNum: 300, price: 'Starting at $300', title: 'Automotive Photography', desc: 'Creative automotive photography highlighting design, details, reflections, and the personality of each vehicle.', cta: 'Book Now' },
+    { id: 'events', priceNum: 750, price: 'Starting at $750', title: 'Events & Quinceañeras', desc: 'Event coverage including quinceañeras, celebrations, and important milestones.', cta: 'Contact for Availability' }
+  ];
+
+  state = {
+    menuOpen: false,
+    windowWidth: window.innerWidth,
+    scrollY: window.scrollY,
+    reveals: {},
+    photos: [],
+    modalOpen: false,
+    unlocked: false,
+    passwordInput: '',
+    passwordError: false,
+    selectedService: 'couples',
+    bookingData: null,
+    chatOpen: false,
+    chatInput: '',
+    chatLoading: false,
+    chatMessages: [
+      { from: 'bot', text: "Hi, I'm EV — Samson's personal assistant. I work for him 24/7, but I'm an AI, not a human. I'm here to help figure out what you're hoping to shoot and get you connected with Samson for a consultation. What's the goal of your shoot?" }
+    ],
+    leadName: null,
+    leadPhone: null,
+    leadGoal: null,
+    leadDate: null,
+    leadBudget: null,
+    historyOpen: false,
+    historyUnlocked: false,
+    historyPasswordInput: '',
+    historyPasswordError: false
+  };
+
+  chatSessionId = Date.now() + '-' + Math.random().toString(36).slice(2);
+
+  chatSystemPrompt = `You are EV, Samson Serassio's personal assistant for SS Visuals, his Utah photography studio (services: Couples & Portraits, Families, Engagement Sessions, Automotive Photography, Events & Quinceañeras). If it comes up, be clear that you're Samson's AI assistant — you work for him 24/7, but you are not a human. Be warm, friendly, and brief (1-3 sentences).
+
+Your goal, in order:
+1. First understand the actual GOAL of the shoot — what they envision, the occasion, mood, or use for the photos. Ask a real follow-up question here, don't accept a one-word answer like "family photos" without learning more about what they want.
+2. Ask what date(s) the event or session is happening.
+3. Nicely ask what budget they had in mind for the shoot. Once they share a number, build value in Samson's work first — mention things like his experience across couples, families, automotive, and events, the quality and care he puts into every session, and how a fuller session (more time, more coverage, more edited images) gets them a lot more for a bit more investment — then warmly suggest a package a step up from what they mentioned, if it fits what they're hoping for. Never be pushy or make up numbers that don't match the actual service pricing on the site; the goal is to help them see the value, not pressure them.
+4. Get their name and the best phone number to reach them.
+5. Only once you have the goal, date, budget, name, AND phone number, tell them clearly: tapping "Text Samson your information to get a consultation" below will open a pre-filled text message on their own phone, addressed to Samson, and they just need to hit send — that's what lets Samson follow up with a consultation.
+
+Don't re-ask for info you already have. Whatever else the visitor asks along the way, answer briefly and steer back toward these steps.
+
+If someone asks about a type of shoot that isn't one of the listed services (Couples & Portraits, Families, Engagement Sessions, Automotive Photography, Events & Quinceañeras), tell them yes, Samson can do that — just let them know it'll be a premium fee since it's outside his standard packages, and Samson will follow up with the exact pricing. Don't make up a specific number yourself.
+
+If someone asks to pay less than the listed price for a service, don't allow it — let them know the deposit has to be based on the full listed price, but they're welcome to leave a note in the message on the booking form and Samson can consider it on request.
+
+If someone wants to pay more than the listed price, that's fine — let them submit whatever amount they'd like to pay. But don't allow anything more than 3x the service's listed price; if they offer more than that, let them know that's more than needed and ask what amount within a reasonable range they'd like to submit instead.
+
+At the very end of every reply, append one line with this exact format, with no extra text after it, using null for anything unknown (keep values already known from earlier in the conversation):
+<<LEAD:{"name":"...","phone":"...","goal":"...","date":"...","budget":"..."}>>`;
+
+  componentDidMount() {
+    try {
+      const saved = localStorage.getItem('ssvisuals_gallery_photos');
+      if (saved) this.setState({ photos: JSON.parse(saved) });
+    } catch (e) {}
+    this._onResize = () => this.setState({ windowWidth: window.innerWidth });
+    this._onScroll = () => this.setState({ scrollY: window.scrollY });
+    window.addEventListener('resize', this._onResize);
+    window.addEventListener('scroll', this._onScroll, { passive: true });
+    if (this._root) {
+      this._observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const key = entry.target.getAttribute('data-reveal');
+            this.setState((s) => ({ reveals: { ...s.reveals, [key]: true } }));
+            this._observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+      this._root.querySelectorAll('[data-reveal]').forEach((el) => this._observer.observe(el));
+    }
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this._onResize);
+    window.removeEventListener('scroll', this._onScroll);
+    if (this._observer) this._observer.disconnect();
+  }
+
+  setRootRef = (el) => { this._root = el; };
+  toggleMenu = () => this.setState((s) => ({ menuOpen: !s.menuOpen }));
+  handleServiceChange = (e) => this.setState({ selectedService: e.target.value });
+  resetBooking = () => this.setState({ bookingData: null });
+  handleBookingSubmit = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    if (!form.checkValidity()) { form.reportValidity(); return; }
+    const data = new FormData(form);
+    const firstName = data.get('firstName') || '';
+    const lastName = data.get('lastName') || '';
+    const phone = data.get('phone') || '';
+    const email = data.get('email') || '';
+    const serviceId = data.get('service') || this.state.selectedService;
+    const location = data.get('location') || '';
+    const date = data.get('date') || '';
+    const time = data.get('time') || '';
+    const message = data.get('message') || '';
+    const svc = this.services.find((s) => s.id === serviceId) || this.services[0];
+    const depositPercent = this.props.depositPercent ?? 50;
+    const processingFeePercent = this.props.processingFeePercent ?? 15;
+    const depositAmount = Math.round(svc.priceNum * depositPercent / 100 * (1 + processingFeePercent / 100));
+    const studioEmail = this.props.studioEmail || 'hello@ssvisuals.com';
+    const studioPhone = (this.props.studioPhone || '8019183719').replace(/\D/g, '');
+    const summary = `New booking request\n\nName: ${firstName} ${lastName}\nPhone: ${phone}\nEmail: ${email}\nSession: ${svc.title}\nLocation: ${location || '\u2014'}\nDate: ${date || '\u2014'}\nTime: ${time || '\u2014'}\nDeposit due: $${depositAmount}\n\nMessage:\n${message}`;
+    const mailtoHref = `mailto:${studioEmail}?subject=${encodeURIComponent('Booking request \u2014 ' + svc.title)}&body=${encodeURIComponent(summary)}`;
+    const smsHref = `sms:${studioPhone}?body=${encodeURIComponent(summary)}`;
+    const paymentLinkMap = {
+      couples: this.props.paymentLinkCouples,
+      families: this.props.paymentLinkFamilies,
+      engagement: this.props.paymentLinkEngagement,
+      automotive: this.props.paymentLinkAutomotive,
+      events: this.props.paymentLinkEvents
+    };
+    const paymentLink = paymentLinkMap[svc.id] || '';
+    this.setState({ bookingData: { mailtoHref, smsHref, paymentLink, depositAmount } });
+  };
+
+  savePhotos = (photos) => {
+    try {
+      localStorage.setItem('ssvisuals_gallery_photos', JSON.stringify(photos));
+      this.setState({ galleryError: false });
+    } catch (e) {
+      this.setState({ galleryError: true });
+    }
+  };
+
+  compressImage = (file) => new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        const maxDim = 1600;
+        let { width, height } = img;
+        if (width > maxDim || height > maxDim) {
+          const scale = maxDim / Math.max(width, height);
+          width = Math.round(width * scale);
+          height = Math.round(height * scale);
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL('image/jpeg', 0.82));
+      };
+      img.onerror = () => resolve(reader.result);
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+  openGalleryModal = () => this.setState({ modalOpen: true });
+  closeGalleryModal = () => this.setState({ modalOpen: false, passwordInput: '', passwordError: false });
+  stopClick = (e) => e.stopPropagation();
+  handlePasswordChange = (e) => this.setState({ passwordInput: e.target.value });
+  submitPassword = (e) => {
+    e.preventDefault();
+    if (this.state.passwordInput === this.galleryPassword) {
+      this.setState({ unlocked: true, passwordError: false });
+    } else {
+      this.setState({ passwordError: true });
+    }
+  };
+  handleFileUpload = (e) => {
+    const files = Array.from(e.target.files || []);
+    files.forEach((file) => {
+      this.compressImage(file).then((dataUrl) => {
+        this.setState((s) => {
+          const photos = [...s.photos, { id: Date.now() + Math.random(), src: dataUrl }];
+          this.savePhotos(photos);
+          return { photos };
+        });
+      });
+    });
+    e.target.value = '';
+  };
+  saveChatHistory = (messages) => {
+    try {
+      const raw = localStorage.getItem('ssvisuals_chat_history');
+      const all = raw ? JSON.parse(raw) : {};
+      all[this.chatSessionId] = { id: this.chatSessionId, updatedAt: Date.now(), messages };
+      localStorage.setItem('ssvisuals_chat_history', JSON.stringify(all));
+    } catch (e) {}
+  };
+
+  toggleChat = () => this.setState((s) => ({ chatOpen: !s.chatOpen }));
+  openHistory = () => this.setState({ historyOpen: true });
+  closeHistory = () => this.setState({ historyOpen: false, historyPasswordInput: '', historyPasswordError: false });
+  handleHistoryPasswordChange = (e) => this.setState({ historyPasswordInput: e.target.value });
+  submitHistoryPassword = (e) => {
+    e.preventDefault();
+    if (this.state.historyPasswordInput === this.galleryPassword) {
+      this.setState({ historyUnlocked: true, historyPasswordError: false });
+    } else {
+      this.setState({ historyPasswordError: true });
+    }
+  };
+  handleChatInputChange = (e) => this.setState({ chatInput: e.target.value });
+  handleChatBookClick = () => this.setState({ chatOpen: false });
+  handleChatSend = async (e) => {
+    e.preventDefault();
+    const text = this.state.chatInput.trim();
+    if (!text || this.state.chatLoading) return;
+    const history = [...this.state.chatMessages, { from: 'user', text }];
+    this.setState({ chatInput: '', chatLoading: true, chatMessages: history });
+    this.saveChatHistory(history);
+
+    const messages = history
+      .filter((m) => m.from === 'user' || m.from === 'bot')
+      .slice(-12)
+      .map((m) => ({ role: m.from === 'user' ? 'user' : 'assistant', content: m.text }));
+
+    let replyText = "The fastest way to get an answer and lock in your date is booking a session below.";
+    try {
+      const raw = await window.claude.complete({ system: this.chatSystemPrompt, messages, max_tokens: 300 });
+      const match = raw.match(/<<LEAD:(\{[\s\S]*?\})>>/);
+      replyText = match ? raw.slice(0, match.index).trim() : raw.trim();
+      if (match) {
+        try {
+          const lead = JSON.parse(match[1]);
+          this.setState((s) => ({
+            leadName: (lead.name && lead.name !== 'null') ? lead.name : s.leadName,
+            leadPhone: (lead.phone && lead.phone !== 'null') ? lead.phone : s.leadPhone,
+            leadGoal: (lead.goal && lead.goal !== 'null') ? lead.goal : s.leadGoal,
+            leadDate: (lead.date && lead.date !== 'null') ? lead.date : s.leadDate,
+            leadBudget: (lead.budget && lead.budget !== 'null') ? lead.budget : s.leadBudget
+          }));
+        } catch (err) {}
+      }
+    } catch (err) {}
+
+    this.setState((s) => {
+      const messages = [...s.chatMessages, { from: 'bot', text: replyText }];
+      this.saveChatHistory(messages);
+      return { chatLoading: false, chatMessages: messages };
+    });
+  };
+
+  removePhoto = (id) => {
+    this.setState((s) => {
+      const photos = s.photos.filter((p) => p.id !== id);
+      this.savePhotos(photos);
+      return { photos };
+    });
+  };
+
+  renderVals() {
+    const isMobile = this.state.windowWidth < 900;
+    const revealKeys = ['portfolio', 'gallery', 'services', 'about', 'sponsorship', 'testimonials', 'instagram', 'contact'];
+    const revealStyle = {};
+    revealKeys.forEach((k) => {
+      const on = !!this.state.reveals[k];
+      revealStyle[k] = {
+        opacity: on ? 1 : 0,
+        transform: on ? 'translateY(0)' : 'translateY(28px)',
+        transition: 'opacity 0.9s ease, transform 0.9s ease'
+      };
+    });
+
+    const enableParallax = this.props.enableParallax ?? true;
+    const heroOverlayOpacity = this.props.heroOverlayOpacity ?? 0.55;
+    const parallaxY = enableParallax ? Math.min(this.state.scrollY * 0.15, 80) : 0;
+
+    const services = this.services;
+    const depositPercent = this.props.depositPercent ?? 50;
+    const processingFeePercent = this.props.processingFeePercent ?? 15;
+    const selectedSvc = services.find((s) => s.id === this.state.selectedService) || services[0];
+    const depositAmount = Math.round(selectedSvc.priceNum * depositPercent / 100 * (1 + processingFeePercent / 100));
+    let historySessions = [];
+    try {
+      const raw = localStorage.getItem('ssvisuals_chat_history');
+      const all = raw ? JSON.parse(raw) : {};
+      historySessions = Object.values(all)
+        .sort((a, b) => b.updatedAt - a.updatedAt)
+        .map((s) => ({
+          label: 'Conversation',
+          dateLabel: new Date(s.updatedAt).toLocaleString(),
+          messages: s.messages.map((m) => ({
+            ...m,
+            bubbleStyle: {
+              alignSelf: m.from === 'user' ? 'flex-end' : 'flex-start',
+              background: m.from === 'user' ? '#141414' : '#EBEAE6',
+              color: m.from === 'user' ? '#F6F5F2' : '#141414',
+              padding: '10px 14px',
+              fontSize: '13px',
+              lineHeight: 1.5,
+              maxWidth: '85%'
+            }
+          }))
+        }));
+    } catch (e) {}
+
+    const photos = this.state.photos.map((p) => ({
+      ...p,
+      remove: () => this.removePhoto(p.id),
+      bgStyle: { width: '100%', height: '100%', backgroundImage: `url(${p.src})`, backgroundSize: 'cover', backgroundPosition: 'center' }
+    }));
+
+    return {
+      isMobile,
+      menuOpen: this.state.menuOpen,
+      toggleMenu: this.toggleMenu,
+      setRootRef: this.setRootRef,
+      revealStyle,
+      services,
+      instaTiles: [1, 2, 3, 4, 5, 6],
+      selectedService: this.state.selectedService,
+      handleServiceChange: this.handleServiceChange,
+      handleBookingSubmit: this.handleBookingSubmit,
+      resetBooking: this.resetBooking,
+      bookingData: this.state.bookingData,
+      depositPercent,
+      processingFeePercent,
+      depositAmount,
+      selectedSvc,
+      photos,
+      hasPhotos: photos.length > 0,
+      modalOpen: this.state.modalOpen,
+      unlocked: this.state.unlocked,
+      passwordInput: this.state.passwordInput,
+      passwordError: this.state.passwordError,
+      galleryError: this.state.galleryError,
+      chatOpen: this.state.chatOpen,
+      chatInput: this.state.chatInput,
+      chatLoading: this.state.chatLoading,
+      chatSendLabel: this.state.chatLoading ? '…' : 'Send',
+      sponsorshipVenmo: this.props.sponsorshipVenmo || '',
+      sponsorshipCashApp: this.props.sponsorshipCashApp || '',
+      sponsorshipPaypal: this.props.sponsorshipPaypal || '',
+      historyOpen: this.state.historyOpen,
+      historyUnlocked: this.state.historyUnlocked,
+      historyPasswordInput: this.state.historyPasswordInput,
+      historyPasswordError: this.state.historyPasswordError,
+      openHistory: this.openHistory,
+      closeHistory: this.closeHistory,
+      handleHistoryPasswordChange: this.handleHistoryPasswordChange,
+      submitHistoryPassword: this.submitHistoryPassword,
+      hasHistory: historySessions.length > 0,
+      historySessions,
+      leadPhone: (this.state.leadPhone && this.state.leadGoal) ? this.state.leadPhone : null,
+      leadSmsHref: (this.state.leadPhone && this.state.leadGoal)
+        ? `sms:${(this.props.studioPhone || '8019183719').replace(/\D/g, '')}?body=${encodeURIComponent(`Hi Samson, this is EV, your personal assistant. This is a new client reaching out about the following:\n\nName: ${this.state.leadName || 'unknown'}\nPhone: ${this.state.leadPhone}\nGoal: ${this.state.leadGoal}\nEvent date: ${this.state.leadDate || 'unspecified'}\nBudget discussed: ${this.state.leadBudget || 'unspecified'}`)}`
+        : '',
+      chatButtonLabel: this.state.chatOpen ? '×' : 'Chat',
+      chatButtonFontSize: this.state.chatOpen ? '22px' : '11px',
+      chatMessages: this.state.chatMessages.map((m) => ({
+        ...m,
+        bubbleStyle: {
+          alignSelf: m.from === 'user' ? 'flex-end' : 'flex-start',
+          background: m.from === 'user' ? '#141414' : '#EBEAE6',
+          color: m.from === 'user' ? '#F6F5F2' : '#141414',
+          padding: '10px 14px',
+          fontSize: '13px',
+          lineHeight: 1.5,
+          maxWidth: '85%'
+        }
+      })),
+      toggleChat: this.toggleChat,
+      handleChatInputChange: this.handleChatInputChange,
+      handleChatBookClick: this.handleChatBookClick,
+      handleChatSend: this.handleChatSend,
+      openGalleryModal: this.openGalleryModal,
+      closeGalleryModal: this.closeGalleryModal,
+      stopClick: this.stopClick,
+      handlePasswordChange: this.handlePasswordChange,
+      submitPassword: this.submitPassword,
+      handleFileUpload: this.handleFileUpload,
+      heroOverlayStyle: {
+        position: 'absolute', inset: 0, zIndex: 1,
+        background: `linear-gradient(180deg, rgba(20,20,20,${heroOverlayOpacity * 0.55}) 0%, rgba(20,20,20,${heroOverlayOpacity}) 100%)`
+      },
+      heroParallaxStyle: {
+        position: 'absolute', top: '-10%', left: 0, right: 0, height: '120%',
+        transform: `translateY(${parallaxY}px)`
+      }
+    };
+  }
+}
+
+</script>
+</body>
+</html>
