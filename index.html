@@ -19,6 +19,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&amp;family=Jost:wght@300;400;500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
 <script src="./image-slot.js"></script>
+<script src="//code.tidio.co/yvqy2ifzdc87lkt0b68iqgoonl8y9nnz.js" async=""></script>
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#F6F5F2;font-family:'Jost',sans-serif;text-wrap:pretty}
@@ -53,7 +54,7 @@ input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px soli
       <a href="#" style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.05em;padding:10px 16px;border:1px solid #4A4A47;color:#141414;white-space:nowrap">Client Portal</a>
     </sc-if>
     <sc-if value="{{ !isMobile }}" hint-placeholder-val="{{ true }}">
-      <a href="#contact" style="background:#141414;color:#F6F5F2;padding:12px 22px;font-size:14px;white-space:nowrap">Book Your Session</a>
+      <a href="{{ squareBookingUrl }}" target="_blank" rel="noopener" style="background:#141414;color:#F6F5F2;padding:12px 22px;font-size:14px;white-space:nowrap">Book Your Session</a>
     </sc-if>
     <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
       <button onclick="{{ toggleMenu }}" aria-label="Toggle menu" style="width:44px;height:44px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px;background:none;border:1px solid #141414;cursor:pointer;padding:0">
@@ -74,7 +75,7 @@ input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px soli
     <a href="#sponsorship" onclick="{{ toggleMenu }}" style="font-size:15px">Sponsorship</a>
     <a href="#contact" onclick="{{ toggleMenu }}" style="font-size:15px">Contact</a>
     <a href="#" style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#4A4A47">Client Portal</a>
-    <a href="#contact" onclick="{{ toggleMenu }}" style="background:#141414;color:#F6F5F2;padding:14px;text-align:left">Book Your Session</a>
+    <a href="{{ squareBookingUrl }}" target="_blank" rel="noopener" style="background:#141414;color:#F6F5F2;padding:14px;text-align:left">Book Your Session</a>
   </div>
 </sc-if>
 
@@ -95,7 +96,7 @@ input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px soli
     </div>
     <p style="font-family:'Jost',sans-serif;font-weight:300;font-size:clamp(16px,2vw,20px);color:#EBEAE6;max-width:640px;margin-top:28px;line-height:1.6">Couples · Families · Engagements · Automotive · Events &amp; Quinceañeras</p>
     <div style="display:flex;gap:16px;margin-top:36px;flex-wrap:wrap">
-      <a href="#contact" style="background:#F6F5F2;color:#141414;padding:15px 30px;font-size:15px">Book Your Session</a>
+      <a href="{{ squareBookingUrl }}" target="_blank" rel="noopener" style="background:#F6F5F2;color:#141414;padding:15px 30px;font-size:15px">Book Your Session</a>
       <a href="#portfolio" style="border:1px solid #F6F5F2;color:#F6F5F2;padding:15px 30px;font-size:15px">View Portfolio</a>
     </div>
   </div>
@@ -212,7 +213,7 @@ input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px soli
           <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#4A4A47">{{ svc.price }}</span>
           <h3 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:22px;margin:0;color:#141414">{{ svc.title }}</h3>
           <p style="font-family:'Jost',sans-serif;font-size:14px;line-height:1.6;color:#6E6C67;flex:1;margin:0">{{ svc.desc }}</p>
-          <a href="#contact" style="margin-top:12px;background:#141414;color:#F6F5F2;padding:10px 18px;font-size:13px;text-align:left;align-self:flex-start">{{ svc.cta }}</a>
+          <a href="{{ squareBookingUrl }}" target="_blank" rel="noopener" style="margin-top:12px;background:#141414;color:#F6F5F2;padding:10px 18px;font-size:13px;text-align:left;align-self:flex-start">{{ svc.cta }}</a>
         </div>
       </div>
     </sc-for>
@@ -299,6 +300,8 @@ input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px soli
 <section id="contact" style="scroll-margin-top:80px;background:#F6F5F2;padding:96px clamp(20px,6vw,80px)">
   <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:#4A4A47">Contact</span>
   <h2 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(32px,4vw,52px);color:#141414;margin:12px 0 40px">Book your session</h2>
+  <a href="{{ squareBookingUrl }}" target="_blank" rel="noopener" style="display:inline-block;background:#141414;color:#F6F5F2;padding:16px 28px;font-size:14px;margin-bottom:16px">Book &amp; pay a deposit on Square</a>
+  <p style="font-family:'Jost',sans-serif;font-size:13px;color:#6E6C67;margin:0 0 40px">Or send a request below and Samson will follow up directly.</p>
   <div style="display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:clamp(32px,5vw,64px)">
     <sc-if value="{{ !bookingData }}" hint-placeholder-val="{{ true }}">
     <form onsubmit="{{ handleBookingSubmit }}" style="display:flex;flex-direction:column;gap:18px">
@@ -417,7 +420,7 @@ input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px soli
       <sc-if value="{{ leadPhone }}" hint-placeholder-val="{{ false }}">
         <a href="{{ leadSmsHref }}" style="background:#4A4A47;color:#F6F5F2;padding:11px 16px;font-size:12px;text-align:center">Text Samson your information to get a consultation</a>
       </sc-if>
-      <a href="#contact" onclick="{{ handleChatBookClick }}" style="background:#141414;color:#F6F5F2;padding:12px 16px;font-size:13px;text-align:center">Go to Booking Form</a>
+      <a href="{{ squareBookingUrl }}" target="_blank" rel="noopener" style="background:#141414;color:#F6F5F2;padding:12px 16px;font-size:13px;text-align:center">Book on Square</a>
       <form onsubmit="{{ handleChatSend }}" style="display:flex;gap:8px">
         <input type="text" value="{{ chatInput }}" onchange="{{ handleChatInputChange }}" placeholder="Ask something…" style="flex:1;padding:10px;border:1px solid #E2E0D9;background:#FFFFFF;color:#141414;font-size:13px">
         <button type="submit" disabled="{{ chatLoading }}" style="background:#141414;color:#F6F5F2;border:none;padding:10px 14px;font-size:13px;cursor:pointer">{{ chatSendLabel }}</button>
@@ -822,6 +825,7 @@ At the very end of every reply, append one line with this exact format, with no 
       chatInput: this.state.chatInput,
       chatLoading: this.state.chatLoading,
       chatSendLabel: this.state.chatLoading ? '…' : 'Send',
+      squareBookingUrl: 'https://square.site/book/L5YY89GYCTVNR/ssvisuals',
       sponsorshipVenmo: this.props.sponsorshipVenmo || '',
       sponsorshipCashApp: this.props.sponsorshipCashApp || '',
       sponsorshipPaypal: this.props.sponsorshipPaypal || '',
