@@ -210,7 +210,7 @@ image-slot{border-radius:14px;overflow:hidden;display:block}
       <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#8A7868;font-weight:400">Instagram</span>
       <h2 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(28px,3.4vw,40px);color:#2E2013;margin:12px 0 0">@ssvisuals.studio</h2>
     </div>
-    <a href="https://instagram.com/ssvisuals.studio" target="_blank" rel="noopener" style="font-family:'IBM Plex Mono',monospace;font-size:13px;border-bottom:1px solid #2E2013;padding-bottom:2px">View on Instagram →</a>
+    <a href="https://www.instagram.com/ssvisuals.studio/" target="_blank" rel="noopener" style="font-family:'IBM Plex Mono',monospace;font-size:13px;border-bottom:1px solid #2E2013;padding-bottom:2px">View on Instagram →</a>
   </div>
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:2px;background:#2E2013;margin-top:32px">
     <sc-for list="{{ instaTiles }}" as="n" hint-placeholder-count="6">
@@ -492,90 +492,7 @@ image-slot{border-radius:14px;overflow:hidden;display:block}
 </section>
 </div>
 
-<sc-if value="{{ chatOpen }}" hint-placeholder-val="{{ false }}">
-  <div style="position:fixed;bottom:96px;right:24px;z-index:210;width:min(320px,calc(100vw - 48px));max-height:70vh;background:#FBF8F3;border:1px solid #2E2013;box-shadow:0 12px 32px rgba(20,20,20,0.25);display:flex;flex-direction:column">
-    <div style="background:#2E2013;color:#FBF8F3;padding:16px 18px;display:flex;justify-content:space-between;align-items:center">
-      <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.08em;text-transform:uppercase">EV — My Assistant</span>
-      <div style="display:flex;align-items:center;gap:14px">
-        <button onclick="{{ openHistory }}" aria-label="Chat history" style="background:none;border:none;color:#BBA88F;font-size:11px;letter-spacing:0.05em;cursor:pointer;font-family:'IBM Plex Mono',monospace">History</button>
-        <button onclick="{{ toggleChat }}" aria-label="Close chat" style="background:none;border:none;color:#FBF8F3;font-size:18px;cursor:pointer;line-height:1">×</button>
-      </div>
-    </div>
-    <div style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;min-height:180px">
-      <sc-for list="{{ chatMessages }}" as="msg" hint-placeholder-count="1">
-        <div style="{{ msg.bubbleStyle }}">{{ msg.text }}</div>
-      </sc-for>
-    </div>
-    <div style="padding:14px;border-top:1px solid #E9DCC7;display:flex;flex-direction:column;gap:10px">
-      <sc-if value="{{ leadPhone }}" hint-placeholder-val="{{ false }}">
-        <a href="{{ leadSmsHref }}" style="background:#6B5645;color:#FBF8F3;padding:11px 16px;font-size:12px;text-align:center">Text Samson your information to get a consultation</a>
-      </sc-if>
-      <div style="display:flex;gap:8px">
-        <a href="https://instagram.com/ssvisuals.studio" target="_blank" rel="noopener" style="flex:1;border:1px solid #2E2013;color:#2E2013;padding:9px 12px;font-size:12px;text-align:center">Instagram</a>
-        <sc-if value="{{ youtubeUrl }}" hint-placeholder-val="{{ false }}">
-          <a href="{{ youtubeUrl }}" target="_blank" rel="noopener" style="flex:1;border:1px solid #2E2013;color:#2E2013;padding:9px 12px;font-size:12px;text-align:center">YouTube</a>
-        </sc-if>
-      </div>
-      <a href="{{ squareBookingUrl }}" target="_blank" rel="noopener" style="background:#2E2013;color:#FBF8F3;padding:12px 16px;font-size:13px;text-align:center">Book on Square</a>
-      <form onsubmit="{{ handleChatSend }}" style="display:flex;gap:8px">
-        <input type="text" value="{{ chatInput }}" onchange="{{ handleChatInputChange }}" placeholder="Ask something…" style="flex:1;padding:10px;border:1px solid #E9DCC7;background:#FFFFFF;color:#2E2013;font-size:13px">
-        <button type="submit" disabled="{{ chatLoading }}" style="background:#2E2013;color:#FBF8F3;border:none;padding:10px 14px;font-size:13px;cursor:pointer">{{ chatSendLabel }}</button>
-      </form>
-    </div>
-  </div>
-</sc-if>
-
-<sc-if value="{{ historyOpen }}" hint-placeholder-val="{{ false }}">
-  <div onclick="{{ closeHistory }}" style="position:fixed;inset:0;z-index:220;background:rgba(20,20,20,0.6);display:flex;align-items:center;justify-content:center;padding:20px">
-    <div onclick="{{ stopClick }}" style="background:#FBF8F3;width:100%;max-width:520px;max-height:80vh;overflow:auto;padding:32px;position:relative">
-      <button onclick="{{ closeHistory }}" aria-label="Close" style="position:absolute;top:16px;right:16px;background:none;border:none;font-size:20px;cursor:pointer;color:#2E2013;line-height:1">×</button>
-      <sc-if value="{{ !historyUnlocked }}" hint-placeholder-val="{{ true }}">
-        <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#8A7868;font-weight:400">Chat History</span>
-        <h3 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:26px;color:#2E2013;margin:10px 0 20px">Enter password</h3>
-        <form onsubmit="{{ submitHistoryPassword }}" style="display:flex;flex-direction:column;gap:14px">
-          <input type="password" value="{{ historyPasswordInput }}" onchange="{{ handleHistoryPasswordChange }}" placeholder="Password" style="padding:12px;border:1px solid #E9DCC7;background:#FBF8F3;color:#2E2013;font-size:14px">
-          <sc-if value="{{ historyPasswordError }}" hint-placeholder-val="{{ false }}">
-            <span style="font-size:13px;color:#B3453B">Incorrect password.</span>
-          </sc-if>
-          <button type="submit" style="background:#2E2013;color:#FBF8F3;padding:13px 24px;font-size:14px;border:none;cursor:pointer;align-self:flex-start">Unlock</button>
-        </form>
-      </sc-if>
-      <sc-if value="{{ historyUnlocked }}" hint-placeholder-val="{{ false }}">
-        <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#8A7868;font-weight:400">Chat History</span>
-        <h3 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:26px;color:#2E2013;margin:10px 0 20px">Past conversations</h3>
-        <p style="font-family:'Jost',sans-serif;font-size:12px;color:#8A7868;margin:-12px 0 20px">Only shows conversations from this browser — chats from visitors on other devices aren't visible here.</p>
-        <sc-if value="{{ !hasHistory }}" hint-placeholder-val="{{ false }}">
-          <p style="font-family:'Jost',sans-serif;font-size:14px;color:#8A7868">No past conversations saved yet.</p>
-        </sc-if>
-        <sc-for list="{{ historySessions }}" as="session" hint-placeholder-count="0">
-          <div style="border:1px solid #E9DCC7;margin-bottom:16px">
-            <div style="background:#F3EBE0;padding:12px 16px;display:flex;flex-direction:column;gap:4px">
-              <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px">
-                <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#6B5645">{{ session.label }}</span>
-                <div style="display:flex;align-items:center;gap:10px">
-                  <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#6B5645">{{ session.dateLabel }}</span>
-                  <button onclick="{{ session.remove }}" aria-label="Delete conversation" style="background:none;border:1px solid #B3453B;color:#B3453B;font-size:11px;padding:4px 8px;cursor:pointer">Delete</button>
-                </div>
-              </div>
-              <span style="font-size:14px;color:#2E2013">{{ session.leadName }} — {{ session.leadPhone }}</span>
-              <span style="font-size:13px;color:#6B5645">Goal: {{ session.leadGoal }} · Date: {{ session.leadDate }} · Budget: {{ session.leadBudget }} · Source: {{ session.leadSource }}</span>
-            </div>
-            <div style="padding:14px 16px;display:flex;flex-direction:column;gap:10px">
-              <sc-for list="{{ session.messages }}" as="msg" hint-placeholder-count="0">
-                <div style="{{ msg.bubbleStyle }}">{{ msg.text }}</div>
-              </sc-for>
-              <form onsubmit="{{ session.submitUpdate }}" style="display:flex;gap:8px">
-                <input type="text" value="{{ session.updateInput }}" onchange="{{ session.handleUpdateInput }}" placeholder="Add an update (e.g. texted them 8/12)…" style="flex:1;padding:8px 10px;border:1px solid #E9DCC7;background:#FBF8F3;color:#2E2013;font-size:12px">
-                <button type="submit" style="background:#2E2013;color:#FBF8F3;border:none;padding:8px 12px;font-size:12px;cursor:pointer">Add</button>
-              </form>
-            </div>
-          </div>
-        </sc-for>
-      </sc-if>
-    </div>
-  </div>
-</sc-if>
-<button onclick="{{ toggleChat }}" aria-label="Open chat" style="position:fixed;bottom:24px;right:24px;z-index:210;width:60px;height:60px;border-radius:50%;background:#5C4433;color:#FBF8F3;border:none;cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:{{ chatButtonFontSize }};box-shadow:0 8px 20px rgba(20,20,20,0.3)">{{ chatButtonLabel }}</button>
+<!-- Tidio live chat: set your public key in Tweaks → Chat widget. It injects its own floating bubble; set its color to #5C4433 in the Tidio dashboard to match EV. -->
 
 <div data-reveal="about" style="{{ revealStyle.about }}">
 <section id="about" style="scroll-margin-top:80px;background:#F3EBE0;padding:150px clamp(24px,6vw,100px)">
@@ -607,7 +524,7 @@ image-slot{border-radius:14px;overflow:hidden;display:block}
 
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;heroOverlayOpacity&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:0.55,&quot;min&quot;:0,&quot;max&quot;:0.85,&quot;step&quot;:0.05,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Hero&quot;},&quot;enableParallax&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Hero&quot;},&quot;depositPercent&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:50,&quot;min&quot;:0,&quot;max&quot;:100,&quot;step&quot;:5,&quot;unit&quot;:&quot;%&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Booking&quot;},&quot;studioEmail&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Samson.serassio@gmail.com&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Booking&quot;},&quot;studioPhone&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;8018952276&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Booking&quot;},&quot;paymentLinkCouples&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Payment links&quot;},&quot;paymentLinkFamilies&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Payment links&quot;},&quot;paymentLinkEngagement&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Payment links&quot;},&quot;paymentLinkAutomotive&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Payment links&quot;},&quot;paymentLinkEvents&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Payment links&quot;},&quot;youtubeUrl&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Social links&quot;},&quot;pixiesetUrl&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Social links&quot;},&quot;sponsorshipVenmo&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Sponsorship links&quot;},&quot;sponsorshipCashApp&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Sponsorship links&quot;},&quot;sponsorshipAppleCash&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Sponsorship links&quot;},&quot;sponsorshipPaypal&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Sponsorship links&quot;},&quot;sponsorshipSquareUrl&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Sponsorship links&quot;},&quot;evApiEndpoint&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Chat&quot;}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;heroOverlayOpacity&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:0.55,&quot;min&quot;:0,&quot;max&quot;:0.85,&quot;step&quot;:0.05,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Hero&quot;},&quot;enableParallax&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Hero&quot;},&quot;depositPercent&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:50,&quot;min&quot;:0,&quot;max&quot;:100,&quot;step&quot;:5,&quot;unit&quot;:&quot;%&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Booking&quot;},&quot;studioEmail&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Samson.serassio@gmail.com&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Booking&quot;},&quot;studioPhone&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;8018952276&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Booking&quot;},&quot;paymentLinkCouples&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Payment links&quot;},&quot;paymentLinkFamilies&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Payment links&quot;},&quot;paymentLinkEngagement&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Payment links&quot;},&quot;paymentLinkAutomotive&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Payment links&quot;},&quot;paymentLinkEvents&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Payment links&quot;},&quot;youtubeUrl&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;https://www.youtube.com/@SamsonMakesIt&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Social links&quot;},&quot;pixiesetUrl&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Social links&quot;},&quot;sponsorshipVenmo&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Sponsorship links&quot;},&quot;sponsorshipCashApp&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Sponsorship links&quot;},&quot;sponsorshipAppleCash&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Sponsorship links&quot;},&quot;sponsorshipPaypal&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Sponsorship links&quot;},&quot;sponsorshipSquareUrl&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Sponsorship links&quot;},&quot;tidioPublicKey&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;4ofkwpgxsbqqhi6fdpqhjozgwx6biwak&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Chat widget&quot;}}">
 class Component extends DCLogic {
   galleryPassword = '2001Samson';
 
@@ -630,52 +547,8 @@ class Component extends DCLogic {
     passwordInput: '',
     passwordError: false,
     selectedService: 'couples',
-    bookingData: null,
-    chatOpen: false,
-    chatInput: '',
-    chatLoading: false,
-    chatMessages: [
-      { from: 'bot', text: "Hi, I'm EV — Samson's personal assistant. I work for him 24/7, but I'm an AI, not a human. To get you connected with Samson fast, what's your name, the best number to reach you, and your email?" }
-    ],
-    leadName: null,
-    leadPhone: null,
-    leadEmail: null,
-    leadGoal: null,
-    leadDate: null,
-    leadBudget: null,
-    leadSource: null,
-    referrerFirstName: null,
-    referrerLastName: null,
-    referrerPhone: null,
-    historyOpen: false,
-    historyUnlocked: false,
-    historyPasswordInput: '',
-    historyPasswordError: false,
-    updateInputs: {}
+    bookingData: null
   };
-
-  chatSessionId = Date.now() + '-' + Math.random().toString(36).slice(2);
-
-  chatSystemPrompt = `You are EV, Samson Serassio's personal assistant for SS Visuals, his Utah photography studio (services: Couples & Portraits, Families, Engagement Sessions, Automotive Photography, Events & Quinceañeras). If it comes up, be clear that you're Samson's AI assistant — you work for him 24/7, but you are not a human. Be warm, friendly, and brief (1-3 sentences).
-
-Your goal, in order:
-1. Right away, in your very first exchanges, get their name, the best phone number to reach them, and their email — this comes before anything else. While you ask, also mention they can check out more of Samson's work on Instagram and YouTube (links are shown right below the chat) so they can see real examples while they chat.
-2. Once you have that, understand the actual GOAL of the shoot — what they envision, the occasion, mood, or use for the photos. Ask a real follow-up question here, don't accept a one-word answer like "family photos" without learning more about what they want.
-3. Ask what date(s) the event or session is happening.
-4. Ask how they heard about SS Visuals — give them a natural way to answer, e.g. a referral from someone, a Meta/Instagram or Facebook ad, a Google search, KSL, a business card, or something else. If it was a referral, warmly ask for the referring person's first name, last name, and phone number too — Samson wants to thank them and send a referral reward.
-5. Nicely ask what budget they had in mind for the shoot. Once they share a number, build value in Samson's work first — mention things like his experience across couples, families, automotive, and events, the quality and care he puts into every session, and how a fuller session (more time, more coverage, more edited images) gets them a lot more for a bit more investment — then warmly suggest a package a step up from what they mentioned, if it fits what they're hoping for. Never be pushy or make up numbers that don't match the actual service pricing on the site; the goal is to help them see the value, not pressure them.
-6. Once you have the name, phone number, goal, date, source, AND budget, tell them clearly: tapping "Text Samson your information to get a consultation" below will open a pre-filled text message on their own phone, addressed to Samson, and they just need to hit send — that's what lets Samson follow up with a consultation.
-
-Don't re-ask for info you already have. Whatever else the visitor asks along the way, answer briefly and steer back toward these steps.
-
-If someone asks about a type of shoot that isn't one of the listed services (Couples & Portraits, Families, Engagement Sessions, Automotive Photography, Events & Quinceañeras), tell them yes, Samson can do that — just let them know it'll be a premium fee since it's outside his standard packages, and Samson will follow up with the exact pricing. Don't make up a specific number yourself.
-
-If someone asks to pay less than the listed price for a service, don't allow it — let them know the deposit has to be based on the full listed price, but they're welcome to leave a note in the message on the booking form and Samson can consider it on request.
-
-If someone wants to pay more than the listed price, that's fine — let them submit whatever amount they'd like to pay. But don't allow anything more than 3x the service's listed price; if they offer more than that, let them know that's more than needed and ask what amount within a reasonable range they'd like to submit instead.
-
-At the very end of every reply, append one line with this exact format, with no extra text after it, using null for anything unknown (keep values already known from earlier in the conversation). "source" should be one of: "Referral", "Meta Ad", "Google", "Facebook", "KSL", "Business Card", "Other". Only fill referrerFirstName/referrerLastName/referrerPhone when source is "Referral":
-<<LEAD:{"name":"...","phone":"...","email":"...","goal":"...","date":"...","budget":"...","source":"...","referrerFirstName":"...","referrerLastName":"...","referrerPhone":"..."}>>`;
 
   _leadsCache = {};
   _bookingsCache = [];
@@ -728,6 +601,14 @@ At the very end of every reply, append one line with this exact format, with no 
         this._galleryCache = list;
         this.setState({ photos: list });
       }, () => {});
+    }
+    const tidioKey = (this.props.tidioPublicKey || '').trim();
+    if (tidioKey && !document.getElementById('tidio-script')) {
+      const s = document.createElement('script');
+      s.id = 'tidio-script';
+      s.src = `//code.tidio.co/${tidioKey}.js`;
+      s.async = true;
+      document.body.appendChild(s);
     }
     this._onResize = () => this.setState({ windowWidth: window.innerWidth });
     this._onScroll = () => this.setState({ scrollY: window.scrollY });
@@ -856,48 +737,6 @@ At the very end of every reply, append one line with this exact format, with no 
     });
     e.target.value = '';
   };
-  deleteChatSession = (id) => {
-    const all = { ...this.readLeadsSync() };
-    delete all[id];
-    this.writeLeadsSync(all);
-  };
-  addSessionMessage = (id, text) => {
-    const all = { ...this.readLeadsSync() };
-    if (all[id]) {
-      const messages = [...(all[id].messages || []), { from: 'staff', text: `Update (${new Date().toLocaleDateString()}): ${text}`, timestamp: Date.now() }];
-      all[id] = { ...all[id], messages, updatedAt: Date.now() };
-      this.writeLeadsSync(all);
-    }
-  };
-  messageBubbleStyle = (m) => m.from === 'staff'
-    ? { alignSelf: 'stretch', background: '#FFF9EE', color: '#2E2013', padding: '10px 14px', fontSize: '13px', lineHeight: 1.5, borderLeft: '3px solid #6B5645', fontStyle: 'italic' }
-    : {
-        alignSelf: m.from === 'user' ? 'flex-end' : 'flex-start',
-        background: m.from === 'user' ? '#2E2013' : '#F3EBE0',
-        color: m.from === 'user' ? '#FBF8F3' : '#2E2013',
-        padding: '10px 14px', fontSize: '13px', lineHeight: 1.5, maxWidth: '85%'
-      };
-
-  saveChatHistory = (messages) => {
-    const all = { ...this.readLeadsSync() };
-    all[this.chatSessionId] = {
-      id: this.chatSessionId,
-      updatedAt: Date.now(),
-      messages,
-      leadName: this.state.leadName,
-      leadPhone: this.state.leadPhone,
-      leadEmail: this.state.leadEmail,
-      leadGoal: this.state.leadGoal,
-      leadDate: this.state.leadDate,
-      leadBudget: this.state.leadBudget,
-      leadSource: this.state.leadSource,
-      referrerFirstName: this.state.referrerFirstName,
-      referrerLastName: this.state.referrerLastName,
-      referrerPhone: this.state.referrerPhone
-    };
-    this.writeLeadsSync(all);
-  };
-
   toggleReferralModal = () => this.setState((s) => ({ referralModalOpen: !s.referralModalOpen, referralSubmitted: false }));
   handleReferralSubmit = (e) => {
     e.preventDefault();
@@ -923,75 +762,6 @@ At the very end of every reply, append one line with this exact format, with no 
     this.writeLeadsSync(all);
     form.reset();
     this.setState({ referralSubmitted: true });
-  };
-
-  toggleChat = () => this.setState((s) => ({ chatOpen: !s.chatOpen }));
-  openHistory = () => this.setState({ historyOpen: true });
-  closeHistory = () => this.setState({ historyOpen: false, historyPasswordInput: '', historyPasswordError: false });
-  handleHistoryPasswordChange = (e) => this.setState({ historyPasswordInput: e.target.value });
-  submitHistoryPassword = (e) => {
-    e.preventDefault();
-    if (this.state.historyPasswordInput === this.galleryPassword) {
-      this.setState({ historyUnlocked: true, historyPasswordError: false });
-    } else {
-      this.setState({ historyPasswordError: true });
-    }
-  };
-  handleChatInputChange = (e) => this.setState({ chatInput: e.target.value });
-  handleChatSend = async (e) => {
-    e.preventDefault();
-    const text = this.state.chatInput.trim();
-    if (!text || this.state.chatLoading) return;
-    const history = [...this.state.chatMessages, { from: 'user', text }];
-    this.setState({ chatInput: '', chatLoading: true, chatMessages: history });
-    this.saveChatHistory(history);
-
-    const messages = history
-      .filter((m) => m.from === 'user' || m.from === 'bot')
-      .slice(-12)
-      .map((m) => ({ role: m.from === 'user' ? 'user' : 'assistant', content: m.text }));
-
-    let replyText = "The fastest way to get an answer and lock in your date is booking a session below.";
-    try {
-      const endpoint = this.props.evApiEndpoint;
-      let raw;
-      if (endpoint) {
-        const resp = await fetch(endpoint, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ system: this.chatSystemPrompt, messages })
-        });
-        const data = await resp.json();
-        raw = data.text || '';
-      } else {
-        raw = await window.claude.complete({ system: this.chatSystemPrompt, messages, max_tokens: 300 });
-      }
-      const match = raw.match(/<<LEAD:(\{[\s\S]*?\})>>/);
-      replyText = match ? raw.slice(0, match.index).trim() : raw.trim();
-      if (match) {
-        try {
-          const lead = JSON.parse(match[1]);
-          this.setState((s) => ({
-            leadName: (lead.name && lead.name !== 'null') ? lead.name : s.leadName,
-            leadPhone: (lead.phone && lead.phone !== 'null') ? lead.phone : s.leadPhone,
-            leadEmail: (lead.email && lead.email !== 'null') ? lead.email : s.leadEmail,
-            leadGoal: (lead.goal && lead.goal !== 'null') ? lead.goal : s.leadGoal,
-            leadDate: (lead.date && lead.date !== 'null') ? lead.date : s.leadDate,
-            leadBudget: (lead.budget && lead.budget !== 'null') ? lead.budget : s.leadBudget,
-            leadSource: (lead.source && lead.source !== 'null') ? lead.source : s.leadSource,
-            referrerFirstName: (lead.referrerFirstName && lead.referrerFirstName !== 'null') ? lead.referrerFirstName : s.referrerFirstName,
-            referrerLastName: (lead.referrerLastName && lead.referrerLastName !== 'null') ? lead.referrerLastName : s.referrerLastName,
-            referrerPhone: (lead.referrerPhone && lead.referrerPhone !== 'null') ? lead.referrerPhone : s.referrerPhone
-          }));
-        } catch (err) {}
-      }
-    } catch (err) {}
-
-    this.setState((s) => {
-      const messages = [...s.chatMessages, { from: 'bot', text: replyText }];
-      this.saveChatHistory(messages);
-      return { chatLoading: false, chatMessages: messages };
-    });
   };
 
   removePhoto = (id) => {
@@ -1025,33 +795,9 @@ At the very end of every reply, append one line with this exact format, with no 
     const depositAmount = Math.round(selectedSvc.priceNum * depositPercent / 100);
 
     let leadCount = 0;
-    let historySessions = [];
     {
       const all = this.readLeadsSync();
       leadCount = Object.values(all).filter((s) => !s.claimed).length;
-      historySessions = Object.values(all)
-        .sort((a, b) => b.updatedAt - a.updatedAt)
-        .map((s) => ({
-          label: 'Conversation',
-          dateLabel: new Date(s.updatedAt).toLocaleString(),
-          leadName: s.leadName || '\u2014',
-          leadPhone: s.leadPhone || '\u2014',
-          leadGoal: s.leadGoal || '\u2014',
-          leadDate: s.leadDate || '\u2014',
-          leadBudget: s.leadBudget || '\u2014',
-          leadSource: s.leadSource || '\u2014',
-          remove: () => this.deleteChatSession(s.id),
-          messages: (s.messages || []).map((m) => ({ ...m, bubbleStyle: this.messageBubbleStyle(m) })),
-          updateInput: this.state.updateInputs[s.id] || '',
-          handleUpdateInput: (e) => this.setState((st) => ({ updateInputs: { ...st.updateInputs, [s.id]: e.target.value } })),
-          submitUpdate: (e) => {
-            e.preventDefault();
-            const text = (this.state.updateInputs[s.id] || '').trim();
-            if (!text) return;
-            this.addSessionMessage(s.id, text);
-            this.setState((st) => ({ updateInputs: { ...st.updateInputs, [s.id]: '' } }));
-          }
-        }));
     }
 
     const photos = this.state.photos.map((p) => ({
@@ -1086,10 +832,6 @@ At the very end of every reply, append one line with this exact format, with no 
       passwordInput: this.state.passwordInput,
       passwordError: this.state.passwordError,
       galleryError: this.state.galleryError,
-      chatOpen: this.state.chatOpen,
-      chatInput: this.state.chatInput,
-      chatLoading: this.state.chatLoading,
-      chatSendLabel: this.state.chatLoading ? '…' : 'Send',
       squareBookingUrl: 'https://square.site/book/L5YY89GYCTVNR/ssvisuals',
       pixiesetUrl: this.props.pixiesetUrl || '',
       youtubeUrl: this.props.youtubeUrl || '',
@@ -1102,38 +844,7 @@ At the very end of every reply, append one line with this exact format, with no 
       referralSubmitted: this.state.referralSubmitted,
       toggleReferralModal: this.toggleReferralModal,
       handleReferralSubmit: this.handleReferralSubmit,
-      historyOpen: this.state.historyOpen,
-      historyUnlocked: this.state.historyUnlocked,
-      historyPasswordInput: this.state.historyPasswordInput,
-      historyPasswordError: this.state.historyPasswordError,
-      openHistory: this.openHistory,
-      closeHistory: this.closeHistory,
-      handleHistoryPasswordChange: this.handleHistoryPasswordChange,
-      submitHistoryPassword: this.submitHistoryPassword,
-      hasHistory: historySessions.length > 0,
-      historySessions,
       leadCount,
-      leadPhone: (this.state.leadPhone && this.state.leadGoal) ? this.state.leadPhone : null,
-      leadSmsHref: (this.state.leadPhone && this.state.leadGoal)
-        ? `sms:${(this.props.studioPhone || '8018952276').replace(/\D/g, '')}?body=${encodeURIComponent(`Hi Samson, this is EV, your personal assistant. This is a new client reaching out about the following:\n\nName: ${this.state.leadName || 'unknown'}\nPhone: ${this.state.leadPhone}\nGoal: ${this.state.leadGoal}\nEvent date: ${this.state.leadDate || 'unspecified'}\nBudget discussed: ${this.state.leadBudget || 'unspecified'}`)}`
-        : '',
-      chatButtonLabel: this.state.chatOpen ? '×' : 'Chat',
-      chatButtonFontSize: this.state.chatOpen ? '22px' : '11px',
-      chatMessages: this.state.chatMessages.map((m) => ({
-        ...m,
-        bubbleStyle: {
-          alignSelf: m.from === 'user' ? 'flex-end' : 'flex-start',
-          background: m.from === 'user' ? '#2E2013' : '#F3EBE0',
-          color: m.from === 'user' ? '#FBF8F3' : '#2E2013',
-          padding: '10px 14px',
-          fontSize: '13px',
-          lineHeight: 1.5,
-          maxWidth: '85%'
-        }
-      })),
-      toggleChat: this.toggleChat,
-      handleChatInputChange: this.handleChatInputChange,
-      handleChatSend: this.handleChatSend,
       openGalleryModal: this.openGalleryModal,
       closeGalleryModal: this.closeGalleryModal,
       stopClick: this.stopClick,
