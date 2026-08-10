@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>Staff Access | SS Visuals</title>
+<meta name="description" content="Internal staff dashboard for SS Visuals.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&amp;family=Jost:wght@300;400;500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#FBF8F3;font-family:'Jost',sans-serif;text-wrap:pretty}
+a{color:#2E2013;text-decoration:none}
+a:hover{color:#6B5645}
+input,textarea,select{font-family:'Jost',sans-serif;outline-offset:2px}
+input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid #6B5645}
+button,input,select,textarea,a{border-radius:10px}
+div[style*="background:#F3EBE0"],
+div[style*="background:#FBF3E8"],
+div[style*="border:1px solid #E9DCC7"],
+div[style*="border:1px solid #BBA88F"],
+div[style*="border:1px solid #B3453B"]{border-radius:14px}
+image-slot{border-radius:14px;overflow:hidden;display:block}
+</style>
+</helmet>
+<div style="width:100%;overflow:hidden;background:#FBF8F3">
+
+<header style="position:sticky;top:0;z-index:50;background:#FBF8F3;border-bottom:1px solid #EFE6D8;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:16px clamp(20px,4vw,64px);gap:12px">
+  <a href="SS Visuals - Home.dc.html" style="display:flex;align-items:center;gap:12px">
+    <image-slot id="nav-logo" shape="circle" style="width:44px;height:44px;border:1px solid #BBA88F;box-shadow:0 2px 6px rgba(20,20,20,0.15);flex-shrink:0" placeholder="Logo" aria-label="SS Visuals circular logo mark"></image-slot>
+    <span style="display:flex;flex-direction:column;line-height:1.15">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:14px;letter-spacing:0.08em;color:#2E2013">SS VISUALS</span>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.05em;color:#8A7868">by Samson Serassio</span>
+    </span>
+  </a>
+  <a href="SS Visuals - Home.dc.html" style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.05em;padding:10px 16px;border:1px solid #6B5645;color:#2E2013;white-space:nowrap">← Back to site</a>
+</header>
+
+<section style="background:#FBF8F3;padding:clamp(48px,12vw,150px) clamp(20px,6vw,100px)">
+  <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#8A7868;font-weight:400">Employee</span>
+  <h2 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(40px,5.5vw,72px);letter-spacing:-0.01em;color:#2E2013;margin:20px 0 56px">Staff access</h2>
+  <sc-if value="{{ !employeeUnlocked }}" hint-placeholder-val="{{ true }}">
+    <form onsubmit="{{ submitEmployeePassword }}" style="display:flex;flex-direction:column;gap:14px;max-width:320px">
+      <input type="password" value="{{ employeePasswordInput }}" onchange="{{ handleEmployeePasswordChange }}" placeholder="Password" style="padding:12px;border:1px solid #E9DCC7;background:#FBF8F3;color:#2E2013;font-size:14px">
+      <sc-if value="{{ employeePasswordError }}" hint-placeholder-val="{{ false }}">
+        <span style="font-size:13px;color:#B3453B">Incorrect password.</span>
+      </sc-if>
+      <button type="submit" style="background:#2E2013;color:#FBF8F3;padding:13px 24px;font-size:14px;border:none;cursor:pointer;align-self:flex-start">Unlock</button>
+    </form>
+  </sc-if>
+  <sc-if value="{{ employeeUnlocked }}" hint-placeholder-val="{{ false }}">
+    <div style="display:flex;flex-direction:column;gap:48px">
+      <div>
+        <h3 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:24px;color:#2E2013;margin:0 0 16px">Booking requests</h3>
+        <sc-if value="{{ !hasBookings }}" hint-placeholder-val="{{ false }}">
+          <p style="font-family:'Jost',sans-serif;font-size:14px;color:#8A7868">No booking requests submitted yet.</p>
+        </sc-if>
+        <sc-for list="{{ employeeBookings }}" as="b" hint-placeholder-count="0">
+          <div style="border:1px solid #E9DCC7;padding:16px;margin-bottom:12px;display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px">
+              <div style="display:flex;flex-direction:column;gap:4px">
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#6B5645">{{ b.dateLabel }}</span>
+                <span style="font-size:15px;color:#2E2013">{{ b.name }} — {{ b.phone }} — {{ b.email }}</span>
+                <span style="font-size:14px;color:#6B5645">{{ b.service }} · {{ b.location }} · Requested date: {{ b.date }} {{ b.time }}</span>
+                <span style="font-size:13px;color:#8A7868">{{ b.message }}</span>
+              </div>
+              <button onclick="{{ b.toggleCancel }}" style="background:none;border:1px solid #B3453B;color:#B3453B;font-size:12px;padding:6px 10px;cursor:pointer;white-space:nowrap">Delete</button>
+            </div>
+            <sc-if value="{{ b.cancelOpen }}" hint-placeholder-val="{{ false }}">
+              <div style="background:#F3EBE0;padding:16px;display:flex;flex-direction:column;gap:12px">
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.05em;text-transform:uppercase;color:#6B5645">Cancellation text for {{ b.name }}</span>
+                <p style="font-family:'Jost',sans-serif;font-size:13px;line-height:1.6;color:#2E2013;margin:0;white-space:pre-line">{{ b.cancelScript }}</p>
+                <div style="display:flex;gap:10px;flex-wrap:wrap">
+                  <a href="{{ b.cancelSmsHref }}" style="background:#2E2013;color:#FBF8F3;padding:10px 16px;font-size:13px;text-align:center">Text {{ b.name }} this</a>
+                  <button onclick="{{ b.confirmDelete }}" style="background:#B3453B;color:#FBF8F3;border:none;padding:10px 16px;font-size:13px;cursor:pointer">Confirm Delete</button>
+                  <button onclick="{{ b.toggleCancel }}" style="background:none;border:1px solid #6B5645;color:#6B5645;padding:10px 16px;font-size:13px;cursor:pointer">Keep Booking</button>
+                </div>
+              </div>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+      <div>
+        <h3 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:24px;color:#2E2013;margin:0 0 16px">EV chat leads</h3>
+        <input type="text" value="{{ searchQuery }}" onchange="{{ handleSearchChange }}" placeholder="Search by name, phone, or email…" style="width:100%;max-width:400px;padding:11px 14px;border:1px solid #E9DCC7;background:#FBF8F3;color:#2E2013;font-size:14px;margin-bottom:16px">
+        <form onsubmit="{{ handleAddLead }}" style="border:1px dashed #BBA88F;padding:16px;margin-bottom:16px;display:flex;flex-direction:column;gap:10px">
+          <span style="font-size:13px;color:#6B5645">Add a lead manually</span>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px">
+            <input type="text" name="name" placeholder="Name" style="padding:10px;border:1px solid #E9DCC7;background:#FBF8F3;color:#2E2013;font-size:13px">
+            <input type="tel" name="phone" placeholder="Phone" style="padding:10px;border:1px solid #E9DCC7;background:#FBF8F3;color:#2E2013;font-size:13px">
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px">
+            <input type="text" name="goal" placeholder="Goal / shoot type" style="padding:10px;border:1px solid #E9DCC7;background:#FBF8F3;color:#2E2013;font-size:13px">
+            <input type="text" name="date" placeholder="Date" style="padding:10px;border:1px solid #E9DCC7;background:#FBF8F3;color:#2E2013;font-size:13px">
+          </div>
+          <input type="text" name="budget" placeholder="Budget" style="padding:10px;border:1px solid #E9DCC7;background:#FBF8F3;color:#2E2013;font-size:13px">
+          <button type="submit" style="background:#2E2013;color:#FBF8F3;padding:10px 18px;font-size:13px;border:none;cursor:pointer;align-self:flex-start">Add Lead</button>
+        </form>
+        <sc-if value="{{ showUndoDelete }}" hint-placeholder-val="{{ false }}">
+          <div style="background:#F3EBE0;padding:12px 16px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;gap:12px">
+            <span style="font-size:13px;color:#6B5645">Lead deleted.</span>
+            <button onclick="{{ undoDeleteChatSession }}" style="background:none;border:none;color:#2E2013;font-size:13px;text-decoration:underline;cursor:pointer">Undo</button>
+          </div>
+        </sc-if>
+        <sc-if value="{{ !hasHistory }}" hint-placeholder-val="{{ false }}">
+          <p style="font-family:'Jost',sans-serif;font-size:14px;color:#8A7868">No chat leads captured yet.</p>
+        </sc-if>
+        <h4 style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#6B5645;margin:0 0 10px">New leads — unclaimed</h4>
+        <sc-if value="{{ !hasNewLeads }}" hint-placeholder-val="{{ false }}">
+          <p style="font-family:'Jost',sans-serif;font-size:13px;color:#8A7868;margin:0 0 20px">No new unclaimed leads.</p>
+        </sc-if>
+        <sc-for list="{{ newLeadSessions }}" as="session" hint-placeholder-count="0">
+          <div style="border:1px solid #BBA88F;background:#F3EBE0;padding:16px;margin-bottom:12px;display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px">
+              <div style="display:flex;flex-direction:column;gap:4px">
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#6B5645">{{ session.dateLabel }}</span>
+                <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+                  <input type="text" value="{{ session.leadName }}" onchange="{{ session.handleNameChange }}" placeholder="Name" style="font-size:15px;color:#2E2013;border:1px solid transparent;background:none;padding:2px 4px;font-family:'Jost',sans-serif;width:130px" onfocus="this.style.border='1px solid #BBA88F'" onblur="this.style.border='1px solid transparent'">
+                  <span style="font-size:15px;color:#2E2013">—</span>
+                  <input type="tel" value="{{ session.leadPhone }}" onchange="{{ session.handlePhoneChange }}" placeholder="Phone" style="font-size:15px;color:#2E2013;border:1px solid transparent;background:none;padding:2px 4px;font-family:'Jost',sans-serif;width:130px" onfocus="this.style.border='1px solid #BBA88F'" onblur="this.style.border='1px solid transparent'">
+                </div>
+                <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:14px;color:#6B5645">
+                  <span>Goal:</span>
+                  <input type="text" value="{{ session.leadGoal }}" onchange="{{ session.handleGoalChange }}" placeholder="—" style="font-size:14px;color:#6B5645;border:1px solid transparent;background:none;padding:2px 4px;font-family:'Jost',sans-serif;width:110px" onfocus="this.style.border='1px solid #BBA88F'" onblur="this.style.border='1px solid transparent'">
+                  <span>· Date: {{ session.leadDate }} · Budget:</span>
+                  <input type="text" value="{{ session.leadBudget }}" onchange="{{ session.handleBudgetChange }}" placeholder="—" style="font-size:14px;color:#6B5645;border:1px solid transparent;background:none;padding:2px 4px;font-family:'Jost',sans-serif;width:80px" onfocus="this.style.border='1px solid #BBA88F'" onblur="this.style.border='1px solid transparent'">
+                  <span>· Source:</span>
+                  <select onchange="{{ session.handleSourceChange }}" style="font-size:13px;color:#6B5645;border:1px solid #E9DCC7;background:#FBF8F3;padding:2px 4px;font-family:'Jost',sans-serif">
+                    <option value="" selected="{{ session.leadSource === '' }}">—</option>
+                    <option selected="{{ session.leadSource === 'Referral' }}">Referral</option>
+                    <option selected="{{ session.leadSource === 'Meta Ad' }}">Meta Ad</option>
+                    <option selected="{{ session.leadSource === 'Google' }}">Google</option>
+                    <option selected="{{ session.leadSource === 'Facebook' }}">Facebook</option>
+                    <option selected="{{ session.leadSource === 'KSL' }}">KSL</option>
+                    <option selected="{{ session.leadSource === 'Business Card' }}">Business Card</option>
+                    <option selected="{{ session.leadSource === 'Other' }}">Other</option>
+                  </select>
+                </div>
+              </div>
+              <button onclick="{{ session.claim }}" style="background:#2E2013;color:#FBF8F3;font-size:12px;padding:8px 14px;border:none;cursor:pointer;white-space:nowrap">Claim</button>
+            </div>
+            <button onclick="{{ session.toggleConversation }}" style="background:none;border:none;color:#6B5645;font-size:12px;text-decoration:underline;cursor:pointer;padding:0;text-align:left;align-self:flex-start">{{ session.conversationToggleLabel }}</button>
+            <sc-if value="{{ session.conversationExpanded }}" hint-placeholder-val="{{ false }}">
+              <sc-for list="{{ session.messages }}" as="msg" hint-placeholder-count="0">
+                <div style="{{ msg.bubbleStyle }}">{{ msg.text }}</div>
+              </sc-for>
+            </sc-if>
+            <sc-if value="{{ session.hasPastHistory }}" hint-placeholder-val="{{ false }}">
+              <button onclick="{{ session.toggleHistory }}" style="background:none;border:none;color:#6B5645;font-size:12px;text-decoration:underline;cursor:pointer;padding:0;text-align:left;align-self:flex-start">{{ session.historyToggleLabel }}</button>
+              <sc-if value="{{ session.historyExpanded }}" hint-placeholder-val="{{ false }}">
+                <sc-for list="{{ session.pastHistory }}" as="h" hint-placeholder-count="0">
+                  <div style="background:#FBF8F3;border:1px solid #E9DCC7;padding:10px 12px;display:flex;flex-direction:column;gap:6px">
+                    <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#6B5645">{{ h.dateLabel }} · {{ h.statusLabel }}</span>
+                    <span style="font-size:13px;color:#2E2013">Goal: {{ h.leadGoal }} · Date: {{ h.leadDate }} · Budget: {{ h.leadBudget }}</span>
+                    <span style="font-size:13px;color:#6B5645">Services: {{ h.servicesReceived }} · Deposit: {{ h.depositAmount }} · Payment: {{ h.paymentAmount }}</span>
+                    <span style="font-size:13px;color:#8A7868">Notes: {{ h.notes }}</span>
+                    <sc-for list="{{ h.messages }}" as="msg" hint-placeholder-count="0">
+                      <div style="{{ msg.bubbleStyle }}">{{ msg.text }}</div>
+                    </sc-for>
+                    <button onclick="{{ h.restore }}" style="background:none;border:1px solid #6B5645;color:#6B5645;font-size:11px;padding:5px 8px;cursor:pointer;align-self:flex-start;white-space:nowrap">Restore as Current</button>
+                  </div>
+                </sc-for>
+              </sc-if>
+            </sc-if>
+          </div>
+        </sc-for>
+        <h4 style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#6B5645;margin:28px 0 10px">Claimed — in progress</h4>
+        <sc-if value="{{ !hasClaimedLeads }}" hint-placeholder-val="{{ false }}">
+          <p style="font-family:'Jost',sans-serif;font-size:13px;color:#8A7868;margin:0">No claimed leads yet.</p>
+        </sc-if>
+        <sc-for list="{{ claimedLeadSessions }}" as="session" hint-placeholder-count="0">
+          <div style="border:1px solid #E9DCC7;padding:16px;margin-bottom:12px;display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px">
+              <div style="display:flex;flex-direction:column;gap:4px">
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#6B5645">{{ session.dateLabel }}</span>
+                <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+                  <input type="text" value="{{ session.leadName }}" onchange="{{ session.handleNameChange }}" placeholder="Name" style="font-size:15px;color:#2E2013;border:1px solid transparent;background:none;padding:2px 4px;font-family:'Jost',sans-serif;width:130px" onfocus="this.style.border='1px solid #BBA88F'" onblur="this.style.border='1px solid transparent'">
+                  <span style="font-size:15px;color:#2E2013">—</span>
+                  <input type="tel" value="{{ session.leadPhone }}" onchange="{{ session.handlePhoneChange }}" placeholder="Phone" style="font-size:15px;color:#2E2013;border:1px solid transparent;background:none;padding:2px 4px;font-family:'Jost',sans-serif;width:130px" onfocus="this.style.border='1px solid #BBA88F'" onblur="this.style.border='1px solid transparent'">
+                  <input type="email" value="{{ session.leadEmail }}" onchange="{{ session.handleEmailChange }}" placeholder="Email" style="font-size:15px;color:#2E2013;border:1px solid transparent;background:none;padding:2px 4px;font-family:'Jost',sans-serif;width:180px" onfocus="this.style.border='1px solid #BBA88F'" onblur="this.style.border='1px solid transparent'">
+                  <a href="{{ session.telHref }}" aria-label="Call" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:1px solid #6B5645;color:#2E2013;flex-shrink:0">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                  </a>
+                  <a href="{{ session.smsHrefBlank }}" aria-label="Text" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:1px solid #6B5645;color:#2E2013;flex-shrink:0">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                  </a>
+                </div>
+                <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:14px;color:#6B5645">
+                  <span>Goal:</span>
+                  <input type="text" value="{{ session.leadGoal }}" onchange="{{ session.handleGoalChange }}" placeholder="—" style="font-size:14px;color:#6B5645;border:1px solid transparent;background:none;padding:2px 4px;font-family:'Jost',sans-serif;width:110px" onfocus="this.style.border='1px solid #BBA88F'" onblur="this.style.border='1px solid transparent'">
+                  <span>· Date: {{ session.leadDate }} · Budget:</span>
+                  <input type="text" value="{{ session.leadBudget }}" onchange="{{ session.handleBudgetChange }}" placeholder="—" style="font-size:14px;color:#6B5645;border:1px solid transparent;background:none;padding:2px 4px;font-family:'Jost',sans-serif;width:80px" onfocus="this.style.border='1px solid #BBA88F'" onblur="this.style.border='1px solid transparent'">
+                  <span>· Source:</span>
+                  <select onchange="{{ session.handleSourceChange }}" style="font-size:13px;color:#6B5645;border:1px solid #E9DCC7;background:#FBF8F3;padding:2px 4px;font-family:'Jost',sans-serif">
+                    <option value="" selected="{{ session.leadSource === '' }}">—</option>
+                    <option selected="{{ session.leadSource === 'Referral' }}">Referral</option>
+                    <option selected="{{ session.leadSource === 'Meta Ad' }}">Meta Ad</option>
+                    <option selected="{{ session.leadSource === 'Google' }}">Google</option>
+                    <option selected="{{ session.leadSource === 'Facebook' }}">Facebook</option>
+                    <option selected="{{ session.leadSource === 'KSL' }}">KSL</option>
+                    <option selected="{{ session.leadSource === 'Business Card' }}">Business Card</option>
+                    <option selected="{{ session.leadSource === 'Other' }}">Other</option>
+                  </select>
+                </div>
+              </div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <button onclick="{{ session.startNewLead }}" style="background:none;border:1px solid #6B5645;color:#6B5645;font-size:12px;padding:6px 10px;cursor:pointer;white-space:nowrap">Start New Lead</button>
+                <button onclick="{{ session.remove }}" aria-label="Delete lead" style="background:none;border:1px solid #B3453B;color:#B3453B;font-size:12px;padding:6px 10px;cursor:pointer;white-space:nowrap">Delete</button>
+              </div>
+            </div>
+            <div style="{{ session.taskBoxStyle }}">
+              <span style="font-size:13px;color:#2E2013">{{ session.taskText }}</span>
+              <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <sc-if value="{{ session.taskActive }}" hint-placeholder-val="{{ false }}">
+                  <button onclick="{{ session.markTaskDone }}" style="background:#2E2013;color:#FBF8F3;border:none;font-size:12px;padding:6px 12px;cursor:pointer">Mark Task Done</button>
+                </sc-if>
+                <button onclick="{{ session.toggleTaskPause }}" style="background:none;border:1px solid #6B5645;color:#6B5645;font-size:12px;padding:6px 12px;cursor:pointer">{{ session.taskPauseLabel }}</button>
+              </div>
+            </div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;width:100%">
+              <button onclick="{{ session.toggleHot }}" style="{{ session.hotButtonStyle }}">{{ session.hotLabel }}</button>
+              <button onclick="{{ session.toggleAppt }}" style="{{ session.apptButtonStyle }}">{{ session.apptLabel }}</button>
+              <sc-if value="{{ session.apptBooked }}" hint-placeholder-val="{{ false }}">
+                <button onclick="{{ session.viewReminder }}" style="background:none;border:1px solid #6B5645;color:#6B5645;font-size:12px;padding:6px 10px;cursor:pointer;white-space:nowrap">View Reminder Slip</button>
+              </sc-if>
+              <button onclick="{{ session.toggleSold }}" style="{{ session.soldButtonStyle }}">{{ session.soldLabel }}</button>
+              <sc-if value="{{ session.sold }}" hint-placeholder-val="{{ false }}">
+                <button onclick="{{ session.viewReceipt }}" style="background:none;border:1px solid #6B5645;color:#6B5645;font-size:12px;padding:6px 10px;cursor:pointer;white-space:nowrap">View Receipt</button>
+              </sc-if>
+              <button onclick="{{ session.toggleCallScript }}" style="{{ session.callButtonStyle }}">{{ session.callLabel }}</button>
+              <button onclick="{{ session.toggleAssist }}" style="background:none;border:1px solid #6B5645;color:#6B5645;font-size:12px;padding:6px 10px;cursor:pointer;white-space:nowrap">Ask EV for Help</button>
+            </div>
+            <sc-if value="{{ session.assistOpen }}" hint-placeholder-val="{{ false }}">
+              <div style="background:#F3EBE0;padding:14px;display:flex;flex-direction:column;gap:10px">
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.05em;text-transform:uppercase;color:#6B5645">Ask EV before you text {{ session.leadName }}</span>
+                <sc-for list="{{ session.assistThread }}" as="msg" hint-placeholder-count="0">
+                  <div style="{{ msg.bubbleStyle }}">{{ msg.text }}</div>
+                </sc-for>
+                <form onsubmit="{{ session.submitAssist }}" style="display:flex;gap:8px">
+                  <input type="text" value="{{ session.assistInput }}" onchange="{{ session.handleAssistInputChange }}" placeholder="What do you want help saying?" style="flex:1;padding:9px 10px;border:1px solid #E9DCC7;background:#FBF8F3;color:#2E2013;font-size:13px">
+                  <button type="submit" disabled="{{ session.assistLoading }}" style="background:#2E2013;color:#FBF8F3;border:none;padding:9px 14px;font-size:13px;cursor:pointer">{{ session.assistSendLabel }}</button>
+                </form>
+                <sc-if value="{{ session.assistTextHref }}" hint-placeholder-val="{{ false }}">
+                  <a href="{{ session.assistTextHref }}" style="background:#6B5645;color:#FBF8F3;padding:10px 16px;font-size:13px;text-align:center">Text this draft to {{ session.leadName }}</a>
+                </sc-if>
+              </div>
+            </sc-if>
+            <sc-if value="{{ session.scriptOpen }}" hint-placeholder-val="{{ false }}">
+              <div style="background:#F3EBE0;padding:16px;display:flex;flex-direction:column;gap:12px">
+                <a href="{{ session.telHref }}" style="background:#2E2013;color:#FBF8F3;padding:10px 16px;font-size:13px;text-align:center">Call {{ session.leadName }} now</a>
+                <p style="font-family:'Jost',sans-serif;font-size:13px;line-height:1.6;color:#2E2013;margin:0;white-space:pre-line">{{ session.callScript }}</p>
+              </div>
+            </sc-if>
+            <button onclick="{{ session.toggleConversation }}" style="background:none;border:none;color:#6B5645;font-size:12px;text-decoration:underline;cursor:pointer;padding:0;text-align:left;align-self:flex-start">{{ session.conversationToggleLabel }}</button>
+            <sc-if value="{{ session.conversationExpanded }}" hint-placeholder-val="{{ false }}">
+              <sc-for list="{{ session.messages }}" as="msg" hint-placeholder-count="0">
+                <div style="{{ msg.bubbleStyle }}">{{ msg.text }}</div>
+              </sc-for>
+              <form onsubmit="{{ session.submitUpdate }}" style="display:flex;gap:8px">
+                <input type="text" value="{{ session.updateInput }}" onchange="{{ session.handleUpdateInput }}" placeholder="Add an update (e.g. texted them 8/12)…" style="flex:1;padding:8px 10px;border:1px solid #E9DCC7;background:#FBF8F3;color:#2E2013;font-size:12px">
+                <button type="submit" style="background:#2E2013;color:#FBF8F3;border:none;padding:8px 12px;font-size:12px;cursor:pointer">Add</button>
+              </form>
+            </sc-if>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+              <span style="font-size:12px;color:#6B5645;font-family:'IBM Plex Mono',monospace;letter-spacing:0.05em;text-transform:uppercase">Services history</span>
+              <input type="number" min="0" value="{{ session.serviceCount }}" onchange="{{ session.handleServiceCountChange }}" placeholder="# of services" style="width:110px;padding:8px 10px;border:1px solid #E9DCC7;background:#FBF8F3;color:#2E2013;font-size:13px">
+              <input type="text" value="{{ session.servicesReceived }}" onchange="{{ session.handleServicesReceivedChange }}" placeholder="What they got (e.g. Couples session, Family session)" style="flex:1;min-width:200px;padding:8px 10px;border:1px solid #E9DCC7;background:#FBF8F3;color:#2E2013;font-size:13px">
+            </div>
+            <sc-if value="{{ session.hasPastHistory }}" hint-placeholder-val="{{ false }}">
+              <button onclick="{{ session.toggleHistory }}" style="background:none;border:none;color:#6B5645;font-size:12px;text-decoration:underline;cursor:pointer;padding:0;text-align:left;align-self:flex-start">{{ session.historyToggleLabel }}</button>
+              <sc-if value="{{ session.historyExpanded }}" hint-placeholder-val="{{ false }}">
+                <sc-for list="{{ session.pastHistory }}" as="h" hint-placeholder-count="0">
+                  <div style="background:#F3EBE0;border:1px solid #E9DCC7;padding:10px 12px;display:flex;flex-direction:column;gap:6px">
+                    <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#6B5645">{{ h.dateLabel }} · {{ h.statusLabel }}</span>
+                    <span style="font-size:13px;color:#2E2013">Goal: {{ h.leadGoal }} · Date: {{ h.leadDate }} · Budget: {{ h.leadBudget }}</span>
+                    <span style="font-size:13px;color:#6B5645">Services: {{ h.servicesReceived }} · Deposit: {{ h.depositAmount }} · Payment: {{ h.paymentAmount }}</span>
+                    <span style="font-size:13px;color:#8A7868">Notes: {{ h.notes }}</span>
+                    <sc-for list="{{ h.messages }}" as="msg" hint-placeholder-count="0">
+                      <div style="{{ msg.bubbleStyle }}">{{ msg.text }}</div>
+                    </sc-for>
+                    <button onclick="{{ h.restore }}" style="background:none;border:1px solid #6B5645;color:#6B5645;font-size:11px;padding:5px 8px;cursor:pointer;align-self:flex-start;white-space:nowrap">Restore as Current</button>
+                  </div>
+                </sc-for>
+              </sc-if>
+            </sc-if>
+            <textarea rows="2" placeholder="Notes on this lead…" value="{{ session.notes }}" onchange="{{ session.updateNotes }}" style="padding:10px;border:1px solid #E9DCC7;background:#FBF8F3;color:#2E2013;font-size:13px;resize:vertical;font-family:'Jost',sans-serif"></textarea>
+          </div>
+        </sc-for>
+      </div>
+      <div>
+        <h3 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:24px;color:#2E2013;margin:0 0 16px">Referral tracker</h3>
+        <sc-if value="{{ !hasReferrals }}" hint-placeholder-val="{{ false }}">
+          <p style="font-family:'Jost',sans-serif;font-size:14px;color:#8A7868">No referrals logged yet.</p>
+        </sc-if>
+        <sc-for list="{{ referralGroups }}" as="group" hint-placeholder-count="0">
+          <div style="border:1px solid #BBA88F;background:#FBF3E8;padding:16px;margin-bottom:12px;display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+              <span style="font-size:13px;color:#6B5645">Referred by:</span>
+              <input type="text" value="{{ group.referrerFirstName }}" onchange="{{ group.handleReferrerFirstNameChange }}" placeholder="First name" style="font-size:14px;color:#2E2013;border:1px solid #E9DCC7;background:#FBF8F3;padding:6px 8px;font-family:'Jost',sans-serif;width:110px">
+              <input type="text" value="{{ group.referrerLastName }}" onchange="{{ group.handleReferrerLastNameChange }}" placeholder="Last name" style="font-size:14px;color:#2E2013;border:1px solid #E9DCC7;background:#FBF8F3;padding:6px 8px;font-family:'Jost',sans-serif;width:110px">
+              <input type="tel" value="{{ group.referrerPhone }}" onchange="{{ group.handleReferrerPhoneChange }}" placeholder="Phone" style="font-size:14px;color:#2E2013;border:1px solid #E9DCC7;background:#FBF8F3;padding:6px 8px;font-family:'Jost',sans-serif;width:130px">
+            </div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap">
+              <a href="{{ group.referrerTelHref }}" style="background:#2E2013;color:#FBF8F3;padding:8px 14px;font-size:12px;text-align:center">Call referrer</a>
+              <button onclick="{{ group.toggleReferralReward }}" style="{{ group.referralRewardButtonStyle }}">{{ group.referralRewardLabel }}</button>
+            </div>
+            <div style="border-top:1px solid #E3D3B8;padding-top:10px;display:flex;flex-direction:column;gap:8px">
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.05em;text-transform:uppercase;color:#6B5645">Sent them:</span>
+              <sc-for list="{{ group.referrals }}" as="ref" hint-placeholder-count="0">
+                <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;background:#FBF8F3;padding:10px 12px">
+                  <span style="font-size:14px;color:#2E2013">{{ ref.leadName }} — {{ ref.leadPhone }}</span>
+                  <button onclick="{{ ref.toggleSold }}" style="{{ ref.soldButtonStyle }}">{{ ref.soldLabel }}</button>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="margin-top:48px">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:16px">
+          <h3 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:24px;color:#2E2013;margin:0">Customer spreadsheet</h3>
+          <sc-if value="{{ hasHistory }}" hint-placeholder-val="{{ false }}">
+            <button onclick="{{ downloadSpreadsheet }}" style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.05em;padding:10px 16px;border:1px solid #6B5645;background:none;color:#2E2013;cursor:pointer;white-space:nowrap">Download Spreadsheet (CSV)</button>
+          </sc-if>
+        </div>
+        <sc-if value="{{ !hasHistory }}" hint-placeholder-val="{{ false }}">
+          <p style="font-family:'Jost',sans-serif;font-size:14px;color:#8A7868">No customers yet.</p>
+        </sc-if>
+        <sc-if value="{{ hasHistory }}" hint-placeholder-val="{{ false }}">
+          <div style="background:#F3EBE0;padding:14px 16px;margin-bottom:16px;display:inline-flex;align-items:baseline;gap:8px">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#6B5645">Total collected</span>
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:18px;color:#2E2013">${{ totalCollected }}</span>
+          </div>
+          <div style="overflow-x:auto;border:1px solid #E9DCC7">
+            <table style="width:100%;border-collapse:collapse;min-width:960px">
+              <thead>
+                <tr style="background:#F3EBE0">
+                  <th style="text-align:left;padding:10px 12px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.05em;text-transform:uppercase;color:#6B5645;border-bottom:1px solid #E9DCC7">Date</th>
+                  <th style="text-align:left;padding:10px 12px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.05em;text-transform:uppercase;color:#6B5645;border-bottom:1px solid #E9DCC7">Name</th>
+                  <th style="text-align:left;padding:10px 12px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.05em;text-transform:uppercase;color:#6B5645;border-bottom:1px solid #E9DCC7">Phone</th>
+                  <th style="text-align:left;padding:10px 12px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.05em;text-transform:uppercase;color:#6B5645;border-bottom:1px solid #E9DCC7">Email</th>
+                  <th style="text-align:left;padding:10px 12px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.05em;text-transform:uppercase;color:#6B5645;border-bottom:1px solid #E9DCC7">Goal</th>
+                  <th style="text-align:left;padding:10px 12px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.05em;text-transform:uppercase;color:#6B5645;border-bottom:1px solid #E9DCC7">Event Date</th>
+                  <th style="text-align:left;padding:10px 12px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.05em;text-transform:uppercase;color:#6B5645;border-bottom:1px solid #E9DCC7">Budget</th>
+                  <th style="text-align:left;padding:10px 12px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.05em;text-transform:uppercase;color:#6B5645;border-bottom:1px solid #E9DCC7">Source</th>
+                  <th style="text-align:left;padding:10px 12px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.05em;text-transform:uppercase;color:#6B5645;border-bottom:1px solid #E9DCC7">Status</th>
+                  <th style="text-align:left;padding:10px 12px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.05em;text-transform:uppercase;color:#6B5645;border-bottom:1px solid #E9DCC7">Appt Booked</th>
+                  <th style="text-align:left;padding:10px 12px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.05em;text-transform:uppercase;color:#6B5645;border-bottom:1px solid #E9DCC7">Sold</th>
+                  <th style="text-align:left;padding:10px 12px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.05em;text-transform:uppercase;color:#6B5645;border-bottom:1px solid #E9DCC7"># Services</th>
+                  <th style="text-align:left;padding:10px 12px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.05em;text-transform:uppercase;color:#6B5645;border-bottom:1px solid #E9DCC7">Services Received</th>
+                  <th style="text-align:left;padding:10px 12px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.05em;text-transform:uppercase;color:#6B5645;border-bottom:1px solid #E9DCC7">Deposit</th>
+                  <th style="text-align:left;padding:10px 12px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.05em;text-transform:uppercase;color:#6B5645;border-bottom:1px solid #E9DCC7">Payment</th>
+                  <th style="text-align:left;padding:10px 12px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.05em;text-transform:uppercase;color:#6B5645;border-bottom:1px solid #E9DCC7">Total Paid</th>
+                </tr>
+              </thead>
+              <tbody>
+                <sc-for list="{{ allLeadsTable }}" as="row" hint-placeholder-count="0">
+                  <tr style="{{ row.rowStyle }}">
+                    <td style="padding:10px 12px;font-size:12px;color:#6B5645;border-bottom:1px solid #E9DCC7;white-space:nowrap">{{ row.dateLabel }}</td>
+                    <td style="padding:10px 12px;font-size:13px;color:#2E2013;border-bottom:1px solid #E9DCC7">
+                      <input type="text" value="{{ row.leadName }}" onchange="{{ row.handleNameChange }}" style="border:1px solid transparent;background:none;padding:2px 4px;font-family:'Jost',sans-serif;font-size:13px;color:#2E2013;width:100%" onfocus="this.style.border='1px solid #BBA88F'" onblur="this.style.border='1px solid transparent'">
+                    </td>
+                    <td style="padding:10px 12px;font-size:13px;color:#2E2013;border-bottom:1px solid #E9DCC7;white-space:nowrap">
+                      <input type="tel" value="{{ row.leadPhone }}" onchange="{{ row.handlePhoneChange }}" style="border:1px solid transparent;background:none;padding:2px 4px;font-family:'Jost',sans-serif;font-size:13px;color:#2E2013;width:120px" onfocus="this.style.border='1px solid #BBA88F'" onblur="this.style.border='1px solid transparent'">
+                    </td>
+                    <td style="padding:10px 12px;font-size:13px;color:#2E2013;border-bottom:1px solid #E9DCC7">
+                      <input type="email" value="{{ row.leadEmail }}" onchange="{{ row.handleEmailChange }}" style="border:1px solid transparent;background:none;padding:2px 4px;font-family:'Jost',sans-serif;font-size:13px;color:#2E2013;width:160px" onfocus="this.style.border='1px solid #BBA88F'" onblur="this.style.border='1px solid transparent'">
+                    </td>
+                    <td style="padding:10px 12px;font-size:13px;color:#6B5645;border-bottom:1px solid #E9DCC7">
+                      <input type="text" value="{{ row.leadGoal }}" onchange="{{ row.handleGoalChange }}" style="border:1px solid transparent;background:none;padding:2px 4px;font-family:'Jost',sans-serif;font-size:13px;color:#6B5645;width:100%" onfocus="this.style.border='1px solid #BBA88F'" onblur="this.style.border='1px solid transparent'">
+                    </td>
+                    <td style="padding:10px 12px;font-size:13px;color:#6B5645;border-bottom:1px solid #E9DCC7;white-space:nowrap">{{ row.leadDate }}</td>
+                    <td style="padding:10px 12px;font-size:13px;color:#6B5645;border-bottom:1px solid #E9DCC7;white-space:nowrap">
+                      <input type="text" value="{{ row.leadBudget }}" onchange="{{ row.handleBudgetChange }}" style="border:1px solid transparent;background:none;padding:2px 4px;font-family:'Jost',sans-serif;font-size:13px;color:#6B5645;width:80px" onfocus="this.style.border='1px solid #BBA88F'" onblur="this.style.border='1px solid transparent'">
+                    </td>
+                    <td style="padding:10px 12px;font-size:13px;color:#6B5645;border-bottom:1px solid #E9DCC7;white-space:nowrap">
+                      <select onchange="{{ row.handleSourceChange }}" style="font-size:12px;color:#6B5645;border:1px solid #E9DCC7;background:#FBF8F3;padding:4px;font-family:'Jost',sans-serif">
+                        <option value="" selected="{{ row.leadSource === '' }}">—</option>
+                        <option selected="{{ row.leadSource === 'Referral' }}">Referral</option>
+                        <option selected="{{ row.leadSource === 'Meta Ad' }}">Meta Ad</option>
+                        <option selected="{{ row.leadSource === 'Google' }}">Google</option>
+                        <option selected="{{ row.leadSource === 'Facebook' }}">Facebook</option>
+                        <option selected="{{ row.leadSource === 'KSL' }}">KSL</option>
+                        <option selected="{{ row.leadSource === 'Business Card' }}">Business Card</option>
+                        <option selected="{{ row.leadSource === 'Other' }}">Other</option>
+                      </select>
+                    </td>
+                    <td style="padding:10px 12px;font-size:12px;color:#2E2013;border-bottom:1px solid #E9DCC7;white-space:nowrap">{{ row.statusLabel }}</td>
+                    <td style="padding:10px 12px;border-bottom:1px solid #E9DCC7;white-space:nowrap">
+                      <button onclick="{{ row.toggleAppt }}" style="{{ row.apptButtonStyle }}">{{ row.apptLabel }}</button>
+                    </td>
+                    <td style="padding:10px 12px;border-bottom:1px solid #E9DCC7;white-space:nowrap">
+                      <button onclick="{{ row.toggleSold }}" style="{{ row.soldButtonStyle }}">{{ row.soldLabel }}</button>
+                    </td>
+                    <td style="padding:10px 12px;border-bottom:1px solid #E9DCC7;white-space:nowrap">
+                      <input type="number" min="0" value="{{ row.serviceCount }}" onchange="{{ row.handleServiceCountChange }}" placeholder="0" style="width:60px;padding:6px 8px;border:1px solid #E9DCC7;background:#FBF8F3;color:#2E2013;font-size:12px">
+                    </td>
+                    <td style="padding:10px 12px;border-bottom:1px solid #E9DCC7">
+                      <input type="text" value="{{ row.servicesReceived }}" onchange="{{ row.handleServicesReceivedChange }}" placeholder="e.g. Couples, Family" style="width:100%;min-width:160px;padding:6px 8px;border:1px solid #E9DCC7;background:#FBF8F3;color:#2E2013;font-size:12px">
+                    </td>
+                    <td style="padding:10px 12px;border-bottom:1px solid #E9DCC7;white-space:nowrap">
+                      <div style="display:flex;gap:6px;align-items:center">
+                        <input type="text" value="{{ row.depositAmount }}" onchange="{{ row.handleDepositAmountChange }}" placeholder="$0" style="width:70px;padding:6px 8px;border:1px solid #E9DCC7;background:#FBF8F3;color:#2E2013;font-size:12px">
+                        <button onclick="{{ row.toggleDepositPaid }}" style="{{ row.depositPaidButtonStyle }}">{{ row.depositPaidLabel }}</button>
+                      </div>
+                    </td>
+                    <td style="padding:10px 12px;border-bottom:1px solid #E9DCC7;white-space:nowrap">
+                      <div style="display:flex;gap:6px;align-items:center">
+                        <input type="text" value="{{ row.paymentAmount }}" onchange="{{ row.handlePaymentAmountChange }}" placeholder="$0" style="width:70px;padding:6px 8px;border:1px solid #E9DCC7;background:#FBF8F3;color:#2E2013;font-size:12px">
+                        <button onclick="{{ row.togglePaid }}" style="{{ row.paidButtonStyle }}">{{ row.paidLabel }}</button>
+                      </div>
+                    </td>
+                    <td style="padding:10px 12px;font-family:'IBM Plex Mono',monospace;font-size:13px;color:#2E2013;border-bottom:1px solid #E9DCC7;white-space:nowrap">${{ row.totalPaid }}</td>
+                  </tr>
+                </sc-for>
+              </tbody>
+            </table>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+</section>
+
+<sc-if value="{{ reminderData }}" hint-placeholder-val="{{ false }}">
+  <div onclick="{{ closeReminder }}" style="position:fixed;inset:0;z-index:230;background:rgba(20,20,20,0.6);display:flex;align-items:center;justify-content:center;padding:20px">
+    <div style="display:flex;flex-direction:column;gap:16px;max-width:420px;width:100%">
+      <div ref="{{ setReminderRef }}" onclick="{{ stopClickReceipt }}" style="background:#FFFFFF;padding:36px 32px;border:1px solid #E0D8C8;font-family:'Jost',sans-serif;color:#2E2013;border-radius:14px">
+        <div style="text-align:center;border-bottom:2px solid #2E2013;padding-bottom:16px;margin-bottom:20px">
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:16px;letter-spacing:0.1em;color:#2E2013">SS VISUALS</span>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.05em;color:#8A7868;margin-top:4px">Appointment Reminder</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;font-size:14px">
+          <div style="display:flex;justify-content:space-between"><span style="color:#8A7868">Customer</span><span>{{ reminderData.name }}</span></div>
+          <div style="display:flex;justify-content:space-between"><span style="color:#8A7868">Phone</span><span>{{ reminderData.phone }}</span></div>
+          <div style="display:flex;justify-content:space-between"><span style="color:#8A7868">Service</span><span>{{ reminderData.service }}</span></div>
+          <div style="display:flex;justify-content:space-between"><span style="color:#8A7868">Appointment date</span><span>{{ reminderData.sessionDate }}</span></div>
+        </div>
+        <div style="border-top:1px solid #E9DCC7;margin-top:18px;padding-top:14px;display:flex;flex-direction:column;gap:8px;font-size:14px">
+          <sc-if value="{{ reminderData.depositAmount }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;justify-content:space-between"><span style="color:#8A7868">Deposit paid</span><span>${{ reminderData.depositAmount }}</span></div>
+          </sc-if>
+          <sc-if value="{{ reminderData.balance }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:16px;border-top:1px solid #2E2013;padding-top:10px;margin-top:4px"><span>Balance due</span><span>${{ reminderData.balance }}</span></div>
+          </sc-if>
+        </div>
+        <p style="font-size:12px;color:#6B5645;line-height:1.6;margin:20px 0 0">Your deposit locks in this shoot date. The remaining balance is due at the end of the shoot — this covers the time spent uploading and editing your photos, plus any extra copies you'd like made.</p>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
+        <button onclick="{{ downloadReminder }}" style="background:#2E2013;color:#FBF8F3;border:none;padding:12px 20px;font-size:13px;cursor:pointer">{{ reminderDownloadLabel }}</button>
+        <button onclick="{{ closeReminder }}" style="background:none;border:1px solid #FBF8F3;color:#FBF8F3;padding:12px 20px;font-size:13px;cursor:pointer">Close</button>
+      </div>
+      <p style="text-align:center;font-size:12px;color:#F3EBE0;margin:0">Download the image, then text it to {{ reminderData.name }} as a reminder.</p>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ receiptData }}" hint-placeholder-val="{{ false }}">
+  <div onclick="{{ closeReceipt }}" style="position:fixed;inset:0;z-index:230;background:rgba(20,20,20,0.6);display:flex;align-items:center;justify-content:center;padding:20px">
+    <div style="display:flex;flex-direction:column;gap:16px;max-width:420px;width:100%">
+      <div ref="{{ setReceiptRef }}" onclick="{{ stopClickReceipt }}" style="background:#FFFFFF;padding:36px 32px;border:1px solid #E0D8C8;font-family:'Jost',sans-serif;color:#2E2013;border-radius:14px">
+        <div style="text-align:center;border-bottom:2px solid #2E2013;padding-bottom:16px;margin-bottom:20px">
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:16px;letter-spacing:0.1em;color:#2E2013">SS VISUALS</span>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.05em;color:#8A7868;margin-top:4px">Receipt #{{ receiptData.receiptNumber }} · {{ receiptData.issuedOn }}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;font-size:14px">
+          <div style="display:flex;justify-content:space-between"><span style="color:#8A7868">Customer</span><span>{{ receiptData.name }}</span></div>
+          <div style="display:flex;justify-content:space-between"><span style="color:#8A7868">Phone</span><span>{{ receiptData.phone }}</span></div>
+          <div style="display:flex;justify-content:space-between"><span style="color:#8A7868">Service</span><span>{{ receiptData.service }}</span></div>
+          <div style="display:flex;justify-content:space-between"><span style="color:#8A7868">Session date</span><span>{{ receiptData.sessionDate }}</span></div>
+        </div>
+        <div style="border-top:1px solid #E9DCC7;margin-top:18px;padding-top:14px;display:flex;flex-direction:column;gap:8px;font-size:14px">
+          <sc-if value="{{ receiptData.depositAmount }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;justify-content:space-between"><span style="color:#8A7868">Deposit paid</span><span>${{ receiptData.depositAmount }}</span></div>
+          </sc-if>
+          <sc-if value="{{ receiptData.paymentAmount }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;justify-content:space-between"><span style="color:#8A7868">Payment</span><span>${{ receiptData.paymentAmount }}</span></div>
+          </sc-if>
+          <div style="display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:16px;border-top:1px solid #2E2013;padding-top:10px;margin-top:4px"><span>Total paid</span><span>${{ receiptData.total }}</span></div>
+        </div>
+        <p style="text-align:center;font-size:12px;color:#8A7868;margin:20px 0 0">Thank you for booking with SS Visuals!</p>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
+        <button onclick="{{ downloadReceipt }}" style="background:#2E2013;color:#FBF8F3;border:none;padding:12px 20px;font-size:13px;cursor:pointer">{{ receiptDownloadLabel }}</button>
+        <button onclick="{{ closeReceipt }}" style="background:none;border:1px solid #FBF8F3;color:#FBF8F3;padding:12px 20px;font-size:13px;cursor:pointer">Close</button>
+      </div>
+      <p style="text-align:center;font-size:12px;color:#F3EBE0;margin:0">Download the image, then attach it to a text to {{ receiptData.name }}.</p>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ employeeUnlocked }}" hint-placeholder-val="{{ false }}">
+  <sc-if value="{{ browserOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;bottom:96px;right:24px;z-index:210;width:min(400px,calc(100vw - 48px));height:min(540px,70vh);background:#FBF8F3;border:1px solid #2E2013;box-shadow:0 12px 32px rgba(20,20,20,0.25);display:flex;flex-direction:column;overflow:hidden;border-radius:16px">
+      <div style="background:#2E2013;padding:10px 12px;display:flex;align-items:center;gap:8px;flex-shrink:0">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.05em;text-transform:uppercase;color:#BBA88F;flex-shrink:0">Web</span>
+        <form onsubmit="{{ submitBrowserUrl }}" style="flex:1;display:flex">
+          <input type="text" value="{{ browserUrlInput }}" onchange="{{ handleBrowserUrlChange }}" placeholder="Search Bing or enter a URL" style="flex:1;padding:7px 10px;border:none;font-size:12px;color:#2E2013;background:#FBF8F3">
+        </form>
+        <button onclick="{{ toggleBrowser }}" aria-label="Close browser" style="background:none;border:none;color:#FBF8F3;font-size:18px;cursor:pointer;line-height:1;flex-shrink:0">×</button>
+      </div>
+      <iframe src="{{ browserSrc }}" title="Mini browser" style="flex:1;border:none;width:100%"></iframe>
+    </div>
+  </sc-if>
+  <button onclick="{{ toggleBrowser }}" aria-label="Open browser" style="position:fixed;bottom:24px;right:24px;z-index:210;width:60px;height:60px;border-radius:50%;background:#5C4433;color:#FBF8F3;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(20,20,20,0.3)">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+  </button>
+</sc-if>
+
+<footer style="background:#2E2013;color:#BBA88F;padding:56px clamp(20px,6vw,80px) 32px">
+  <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:32px;padding-bottom:32px;border-bottom:1px solid #6B5645">
+    <div style="display:flex;align-items:center;gap:14px">
+      <image-slot id="footer-logo" shape="circle" style="width:208px;height:191px;border:1px solid #BBA88F" placeholder="Logo" aria-label="SS Visuals logo mark"></image-slot>
+      <image-slot id="footer-signature" shape="rect" style="width:303px;height:97px" placeholder="Signature" aria-label="Samson Serassio signature"></image-slot>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;font-size:14px">
+      <a href="tel:+18018952276" style="color:#FBF8F3">(801) 895-2276</a>
+      <a href="mailto:Samson.serassio@gmail.com" style="color:#FBF8F3">Samson.serassio@gmail.com</a>
+      <span style="color:#BBA88F">Utah, Salt Lake City</span>
+    </div>
+  </div>
+  <p style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#BBA88F;margin-top:24px">© 2026 SS Visuals. All rights reserved.</p>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  galleryPassword = '2001Samson';
+  state = {
+    employeeUnlocked: false, employeePasswordInput: '', employeePasswordError: false,
+    showUndoDelete: false, openCallScriptId: null, updateInputs: {}, expandedConversations: {}, expandedHistory: {}, cancelBookingId: null, searchQuery: '',
+    browserOpen: false, browserUrlInput: 'https://www.bing.com', browserSrc: 'https://www.bing.com',
+    receiptSessionId: null, receiptDownloading: false,
+    reminderSessionId: null, reminderDownloading: false,
+    assistOpen: {}, assistInput: {}, assistThreads: {}, assistLoading: {}
+  };
+
+  toggleConversation = (id) => this.setState((st) => ({ expandedConversations: { ...st.expandedConversations, [id]: !st.expandedConversations[id] } }));
+  handleSearchChange = (e) => this.setState({ searchQuery: e.target.value });
+  toggleHistory = (id) => this.setState((st) => ({ expandedHistory: { ...st.expandedHistory, [id]: !st.expandedHistory[id] } }));
+  startNewLead = (id) => {
+    if (!window.confirm('Archive this lead\'s current info and reset it as a new lead?')) return;
+    try {
+      const raw = localStorage.getItem('ssvisuals_chat_history');
+      const all = raw ? JSON.parse(raw) : {};
+      const s = all[id];
+      if (!s) return;
+      const archived = {
+        archivedAt: Date.now(),
+        leadGoal: s.leadGoal, leadDate: s.leadDate, leadBudget: s.leadBudget,
+        apptBooked: !!s.apptBooked, sold: !!s.sold,
+        depositAmount: s.depositAmount, depositPaid: !!s.depositPaid,
+        paymentAmount: s.paymentAmount, paid: !!s.paid,
+        serviceCount: s.serviceCount, servicesReceived: s.servicesReceived,
+        notes: s.notes, messages: s.messages || []
+      };
+      all[id] = {
+        ...s,
+        history: [...(s.history || []), archived],
+        claimed: false, hot: false, apptBooked: false, sold: false,
+        depositAmount: '', depositPaid: false, paymentAmount: '', paid: false,
+        serviceCount: '', servicesReceived: '', notes: '',
+        leadGoal: '', leadDate: '', leadBudget: '',
+        messages: [],
+        updatedAt: Date.now()
+      };
+      localStorage.setItem('ssvisuals_chat_history', JSON.stringify(all));
+      this.forceUpdate();
+    } catch (e) {}
+  };
+  restorePastEntry = (id, idx) => {
+    if (!window.confirm('Restore this as the current lead? It will replace the current in-progress info.')) return;
+    try {
+      const raw = localStorage.getItem('ssvisuals_chat_history');
+      const all = raw ? JSON.parse(raw) : {};
+      const s = all[id];
+      if (!s || !s.history || !s.history[idx]) return;
+      const entry = s.history[idx];
+      const newHistory = s.history.filter((_, i) => i !== idx);
+      all[id] = {
+        ...s,
+        claimed: true,
+        apptBooked: entry.apptBooked, sold: entry.sold,
+        depositAmount: entry.depositAmount, depositPaid: entry.depositPaid,
+        paymentAmount: entry.paymentAmount, paid: entry.paid,
+        serviceCount: entry.serviceCount, servicesReceived: entry.servicesReceived,
+        notes: entry.notes,
+        leadGoal: entry.leadGoal, leadDate: entry.leadDate, leadBudget: entry.leadBudget,
+        messages: entry.messages || [],
+        history: newHistory,
+        updatedAt: Date.now()
+      };
+      localStorage.setItem('ssvisuals_chat_history', JSON.stringify(all));
+      this.forceUpdate();
+    } catch (e) {}
+  };
+  setReceiptRef = (el) => { this._receiptEl = el; };
+  closeReceipt = () => this.setState({ receiptSessionId: null });
+  downloadReceipt = () => {
+    if (!this._receiptEl || !window.html2canvas) return;
+    this.setState({ receiptDownloading: true });
+    window.html2canvas(this._receiptEl, { backgroundColor: '#ffffff', scale: 2 }).then((canvas) => {
+      const link = document.createElement('a');
+      link.download = 'ss-visuals-receipt.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+      this.setState({ receiptDownloading: false });
+    }).catch(() => this.setState({ receiptDownloading: false }));
+  };
+  setReminderRef = (el) => { this._reminderEl = el; };
+  closeReminder = () => this.setState({ reminderSessionId: null });
+  downloadReminder = () => {
+    if (!this._reminderEl || !window.html2canvas) return;
+    this.setState({ reminderDownloading: true });
+    window.html2canvas(this._reminderEl, { backgroundColor: '#ffffff', scale: 2 }).then((canvas) => {
+      const link = document.createElement('a');
+      link.download = 'ss-visuals-appointment-reminder.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+      this.setState({ reminderDownloading: false });
+    }).catch(() => this.setState({ reminderDownloading: false }));
+  };
+  toggleBrowser = () => this.setState((s) => ({ browserOpen: !s.browserOpen }));
+  handleBrowserUrlChange = (e) => this.setState({ browserUrlInput: e.target.value });
+  submitBrowserUrl = (e) => {
+    e.preventDefault();
+    let url = this.state.browserUrlInput.trim();
+    if (!url) return;
+    if (!/^https?:\/\//i.test(url)) {
+      url = (/\.\w{2,}/.test(url) && !/\s/.test(url)) ? `https://${url}` : `https://www.bing.com/search?q=${encodeURIComponent(url)}`;
+    }
+    this.setState({ browserSrc: url, browserUrlInput: url });
+  };
+
+  toggleCancelBooking = (timestamp) => this.setState((st) => ({ cancelBookingId: st.cancelBookingId === timestamp ? null : timestamp }));
+  confirmDeleteBooking = (timestamp) => {
+    try {
+      const raw = localStorage.getItem('ssvisuals_bookings');
+      const all = raw ? JSON.parse(raw) : [];
+      localStorage.setItem('ssvisuals_bookings', JSON.stringify(all.filter((b) => b.timestamp !== timestamp)));
+      this.setState({ cancelBookingId: null });
+    } catch (e) {}
+  };
+  cancelScriptFor = (b) => `Hi ${b.name || 'there'}, this is Samson with SS Visuals. I'm really sorry, but I have to cancel our ${b.service || 'upcoming'} session${b.date ? ' on ' + b.date : ''}${b.time ? ' at ' + b.time : ''} — something came up on my end and it couldn't be avoided.\n\nI know that's frustrating, and I want to make it right: I'd love to get you rebooked at the front of the line for a new date, plus I'll add a little extra to your session (a few bonus edited photos, on me) for the trouble.\n\nJust let me know a few dates that could work and I'll lock you in right away. Really sorry again, and thank you for understanding!`;
+
+  downloadSpreadsheetCsv = (rows) => {
+    const headers = ['Date', 'Name', 'Phone', 'Goal', 'Event Date', 'Budget', 'Source', 'Status', 'Appt Booked', 'Sold', '# Services', 'Services Received', 'Deposit Amount', 'Deposit Paid', 'Payment Amount', 'Paid'];
+    const esc = (v) => `"${String(v ?? '').replace(/"/g, '""')}"`;
+    const lines = [headers.map(esc).join(',')];
+    rows.forEach((r) => {
+      lines.push([
+        r.dateLabel, r.leadName, r.leadPhone, r.leadGoal, r.leadDate, r.leadBudget, r.leadSource, r.statusLabel,
+        r.apptBooked ? 'Yes' : 'No', r.sold ? 'Yes' : 'No', r.serviceCount, r.servicesReceived,
+        r.depositAmount, r.depositPaid ? 'Yes' : 'No', r.paymentAmount, r.paid ? 'Yes' : 'No'
+      ].map(esc).join(','));
+    });
+    const blob = new Blob([lines.join('\n')], { type: 'text/csv' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `ss-visuals-customers-${new Date().toISOString().slice(0, 10)}.csv`;
+    link.click();
+    URL.revokeObjectURL(link.href);
+  };
+
+  buildTaskInfo = (s) => {
+    const now = Date.now();
+    const firstContactDone = !!s.firstContactDone;
+    const taskPaused = !!s.taskPaused;
+    const lastTaskAt = s.lastTaskCompletedAt || s.claimedAt || s.updatedAt;
+    const daysSince = Math.floor((now - lastTaskAt) / 86400000);
+    const followUpDue = firstContactDone && !taskPaused && daysSince >= 3;
+    let taskText;
+    if (!firstContactDone) {
+      taskText = `Call and text ${s.leadName || 'them'} now — let them know this is you in person, not your assistant EV.`;
+    } else if (taskPaused) {
+      taskText = 'Tasks paused for this lead.';
+    } else if (followUpDue) {
+      taskText = `Text ${s.leadName || 'them'} to follow up — it's been ${daysSince} day${daysSince === 1 ? '' : 's'}.`;
+    } else {
+      const daysLeft = Math.max(3 - daysSince, 0);
+      taskText = `Next follow-up text due in ${daysLeft} day${daysLeft === 1 ? '' : 's'}.`;
+    }
+    const taskActive = !firstContactDone || (!taskPaused && followUpDue);
+    return {
+      taskText,
+      taskActive,
+      taskPaused,
+      markTaskDone: () => this.updateChatSessionMeta(s.id, firstContactDone ? { lastTaskCompletedAt: now } : { firstContactDone: true, lastTaskCompletedAt: now }),
+      toggleTaskPause: () => this.updateChatSessionMeta(s.id, { taskPaused: !taskPaused }),
+      taskBoxStyle: {
+        background: taskActive ? '#FBF1EE' : '#F3EBE0',
+        border: '1px solid ' + (taskActive ? '#B3453B' : '#E9DCC7'),
+        padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: '8px'
+      },
+      taskPauseLabel: taskPaused ? 'Turn On Tasks' : 'Turn Off Tasks'
+    };
+  };
+
+  toggleAssist = (id) => this.setState((s) => ({ assistOpen: { ...s.assistOpen, [id]: !s.assistOpen[id] } }));
+  handleAssistInputChange = (id, e) => this.setState((s) => ({ assistInput: { ...s.assistInput, [id]: e.target.value } }));
+  sendAssistMessage = async (id, session) => {
+    const text = (this.state.assistInput[id] || '').trim();
+    if (!text) return;
+    const thread = [...(this.state.assistThreads[id] || []), { from: 'employee', text }];
+    this.setState((s) => ({
+      assistThreads: { ...s.assistThreads, [id]: thread },
+      assistInput: { ...s.assistInput, [id]: '' },
+      assistLoading: { ...s.assistLoading, [id]: true }
+    }));
+    const systemPrompt = `You are EV, Samson's AI assistant. Right now you're helping SAMSON HIMSELF (the studio owner), not the customer, figure out how to respond to a customer. Customer: ${session.leadName || 'unknown'}, goal: ${session.leadGoal || 'unknown'}, budget: ${session.leadBudget || 'unknown'}, session date: ${session.leadDate || 'unknown'}, notes: ${session.notes || 'none'}. Samson will describe what's going on or what he wants to say. Give him a short, warm, professional text message he can send as-is, or answer his question directly. Keep it concise — a couple sentences unless a longer draft is clearly needed.`;
+    const messages = thread.map((m) => ({ role: m.from === 'employee' ? 'user' : 'assistant', content: m.text }));
+    try {
+      const raw = await window.claude.complete({ system: systemPrompt, messages, max_tokens: 300 });
+      const newThread = [...thread, { from: 'ev', text: raw.trim() }];
+      this.setState((s) => ({ assistThreads: { ...s.assistThreads, [id]: newThread }, assistLoading: { ...s.assistLoading, [id]: false } }));
+    } catch (e) {
+      this.setState((s) => ({ assistLoading: { ...s.assistLoading, [id]: false } }));
+    }
+  };
+
+  addSessionMessage = (id, text) => {
+    try {
+      const raw = localStorage.getItem('ssvisuals_chat_history');
+      const all = raw ? JSON.parse(raw) : {};
+      if (all[id]) {
+        const messages = [...(all[id].messages || []), { from: 'staff', text: `Update (${new Date().toLocaleDateString()}): ${text}`, timestamp: Date.now() }];
+        all[id] = { ...all[id], messages, updatedAt: Date.now() };
+        localStorage.setItem('ssvisuals_chat_history', JSON.stringify(all));
+        this.forceUpdate();
+      }
+    } catch (e) {}
+  };
+  messageBubbleStyle = (m) => m.from === 'staff'
+    ? { alignSelf: 'stretch', background: '#FFF9EE', color: '#2E2013', padding: '10px 14px', fontSize: '13px', lineHeight: 1.5, borderLeft: '3px solid #6B5645', fontStyle: 'italic' }
+    : {
+        alignSelf: m.from === 'user' ? 'flex-end' : 'flex-start',
+        background: m.from === 'user' ? '#2E2013' : '#F3EBE0',
+        color: m.from === 'user' ? '#FBF8F3' : '#2E2013',
+        padding: '10px 14px', fontSize: '13px', lineHeight: 1.5, maxWidth: '85%'
+      };
+
+  handleEmployeePasswordChange = (e) => this.setState({ employeePasswordInput: e.target.value });
+  submitEmployeePassword = (e) => {
+    e.preventDefault();
+    if (this.state.employeePasswordInput === this.galleryPassword) this.setState({ employeeUnlocked: true, employeePasswordError: false });
+    else this.setState({ employeePasswordError: true });
+  };
+
+  updateChatSessionMeta = (id, patch) => {
+    try {
+      const raw = localStorage.getItem('ssvisuals_chat_history');
+      const all = raw ? JSON.parse(raw) : {};
+      if (all[id]) {
+        all[id] = { ...all[id], ...patch };
+        localStorage.setItem('ssvisuals_chat_history', JSON.stringify(all));
+        this.forceUpdate();
+      }
+    } catch (e) {}
+  };
+  deleteChatSession = (id) => {
+    try {
+      const raw = localStorage.getItem('ssvisuals_chat_history');
+      const all = raw ? JSON.parse(raw) : {};
+      if (all[id]) this._lastDeletedSession = all[id];
+      delete all[id];
+      localStorage.setItem('ssvisuals_chat_history', JSON.stringify(all));
+      this.setState({ showUndoDelete: true });
+      this.forceUpdate();
+    } catch (e) {}
+  };
+  undoDeleteChatSession = () => {
+    if (!this._lastDeletedSession) return;
+    try {
+      const raw = localStorage.getItem('ssvisuals_chat_history');
+      const all = raw ? JSON.parse(raw) : {};
+      all[this._lastDeletedSession.id] = this._lastDeletedSession;
+      localStorage.setItem('ssvisuals_chat_history', JSON.stringify(all));
+      this._lastDeletedSession = null;
+      this.setState({ showUndoDelete: false });
+    } catch (e) {}
+  };
+  handleAddLead = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const data = new FormData(form);
+    const id = 'manual-' + Date.now() + '-' + Math.random().toString(36).slice(2);
+    try {
+      const raw = localStorage.getItem('ssvisuals_chat_history');
+      const all = raw ? JSON.parse(raw) : {};
+      all[id] = {
+        id, updatedAt: Date.now(), messages: [],
+        leadName: data.get('name') || '', leadPhone: data.get('phone') || '',
+        leadGoal: data.get('goal') || '', leadDate: data.get('date') || '', leadBudget: data.get('budget') || ''
+      };
+      localStorage.setItem('ssvisuals_chat_history', JSON.stringify(all));
+      form.reset();
+      this.forceUpdate();
+    } catch (err) {}
+  };
+
+  renderVals() {
+    const q = this.state.searchQuery.trim().toLowerCase();
+    const matchesSearch = (s) => !q || [s.leadName, s.leadPhone, s.leadEmail].some((v) => (v || '').toLowerCase().includes(q));
+    let employeeBookings = [];
+    try {
+      const raw = localStorage.getItem('ssvisuals_bookings');
+      const all = raw ? JSON.parse(raw) : [];
+      employeeBookings = all.map((b) => ({
+        ...b,
+        dateLabel: new Date(b.timestamp).toLocaleString(),
+        cancelOpen: this.state.cancelBookingId === b.timestamp,
+        toggleCancel: () => this.toggleCancelBooking(b.timestamp),
+        confirmDelete: () => this.confirmDeleteBooking(b.timestamp),
+        cancelScript: this.cancelScriptFor(b),
+        cancelSmsHref: `sms:${(b.phone || '').replace(/\D/g, '')}?body=${encodeURIComponent(this.cancelScriptFor(b))}`
+      }));
+    } catch (e) {}
+
+    let historySessions = [];
+    try {
+      const raw = localStorage.getItem('ssvisuals_chat_history');
+      const all = raw ? JSON.parse(raw) : {};
+      historySessions = Object.values(all).sort((a, b) => b.updatedAt - a.updatedAt).map((s) => ({
+        dateLabel: new Date(s.updatedAt).toLocaleString(),
+        leadName: s.leadName || '\u2014', leadPhone: s.leadPhone || '',
+        leadGoal: s.leadGoal || '', leadDate: s.leadDate || '\u2014', leadBudget: s.leadBudget || '',
+        leadSource: s.leadSource || '',
+        leadEmail: s.leadEmail || '',
+        handleNameChange: (e) => this.updateChatSessionMeta(s.id, { leadName: e.target.value }),
+        handlePhoneChange: (e) => this.updateChatSessionMeta(s.id, { leadPhone: e.target.value }),
+        handleEmailChange: (e) => this.updateChatSessionMeta(s.id, { leadEmail: e.target.value }),
+        handleGoalChange: (e) => this.updateChatSessionMeta(s.id, { leadGoal: e.target.value }),
+        handleBudgetChange: (e) => this.updateChatSessionMeta(s.id, { leadBudget: e.target.value }),
+        handleSourceChange: (e) => this.updateChatSessionMeta(s.id, { leadSource: e.target.value }),
+        referrerFirstName: s.referrerFirstName || '',
+        referrerLastName: s.referrerLastName || '',
+        referrerPhone: s.referrerPhone || '',
+        handleReferrerFirstNameChange: (e) => this.updateChatSessionMeta(s.id, { referrerFirstName: e.target.value }),
+        handleReferrerLastNameChange: (e) => this.updateChatSessionMeta(s.id, { referrerLastName: e.target.value }),
+        handleReferrerPhoneChange: (e) => this.updateChatSessionMeta(s.id, { referrerPhone: e.target.value }),
+        referrerTelHref: 'tel:' + (s.referrerPhone || '').replace(/\D/g, ''),
+        referralRewardGiven: !!s.referralRewardGiven,
+        toggleReferralReward: () => this.updateChatSessionMeta(s.id, { referralRewardGiven: !s.referralRewardGiven }),
+        referralRewardLabel: s.referralRewardGiven ? '✓ Reward Given' : 'Mark Reward Given',
+        referralRewardButtonStyle: {
+          background: s.referralRewardGiven ? '#3F6B45' : 'none',
+          color: s.referralRewardGiven ? '#FBF8F3' : '#6B5645',
+          border: '1px solid ' + (s.referralRewardGiven ? '#3F6B45' : '#BBA88F'),
+          fontSize: '12px', padding: '6px 10px', cursor: 'pointer', whiteSpace: 'nowrap'
+        },
+        notes: s.notes || '', claimed: !!s.claimed, hot: !!s.hot,
+        claim: () => this.updateChatSessionMeta(s.id, { claimed: true, claimedAt: Date.now() }),
+        scriptOpen: this.state.openCallScriptId === s.id,
+        telHref: 'tel:' + (s.leadPhone || '').replace(/\D/g, ''),
+        callLabel: this.state.openCallScriptId === s.id ? 'Hide call script' : 'Call for referral',
+        callButtonStyle: {
+          background: this.state.openCallScriptId === s.id ? '#2E2013' : 'none',
+          color: this.state.openCallScriptId === s.id ? '#FBF8F3' : '#6B5645',
+          border: '1px solid ' + (this.state.openCallScriptId === s.id ? '#2E2013' : '#BBA88F'),
+          fontSize: '12px', padding: '6px 12px', cursor: 'pointer'
+        },
+        toggleCallScript: () => this.setState((st) => ({ openCallScriptId: st.openCallScriptId === s.id ? null : s.id })),
+        callScript: `Hi ${s.leadName || 'there'}, this is Samson with SS Visuals — you reached out about ${s.leadGoal || 'a session'}${s.leadDate ? ' around ' + s.leadDate : ''}.\n\nThanks for your interest! Based on what you're looking for, here's what I'd recommend...\n\n[Confirm their vision, then walk through the matching package and what's included — coverage time, number of edited images, delivery timeline.]\n\n${s.leadBudget ? 'You mentioned a budget around ' + s.leadBudget + ' — ' : ''}I want to make sure you get the most value, so let me explain what a bit more gets you: more coverage time, more final images, and priority editing turnaround.\n\nTo lock in your date, I take a 50% deposit up front — I can send that link right now if you're ready to book.`,
+        hotLabel: s.hot ? '\u{1F525} Hot lead' : 'Mark as hot lead',
+        hotButtonStyle: {
+          background: s.hot ? '#B3453B' : 'none',
+          color: s.hot ? '#FBF8F3' : '#6B5645',
+          border: '1px solid ' + (s.hot ? '#B3453B' : '#BBA88F'),
+          fontSize: '12px', padding: '6px 12px', cursor: 'pointer'
+        },
+        toggleHot: () => this.updateChatSessionMeta(s.id, { hot: !s.hot }),
+        updateNotes: (e) => this.updateChatSessionMeta(s.id, { notes: e.target.value }),
+        remove: () => this.deleteChatSession(s.id),
+        messages: (s.messages || []).map((m) => ({ ...m, bubbleStyle: this.messageBubbleStyle(m) })),
+        conversationExpanded: !!this.state.expandedConversations[s.id],
+        toggleConversation: () => this.toggleConversation(s.id),
+        conversationToggleLabel: this.state.expandedConversations[s.id] ? 'Minimize conversation' : `Show conversation (${(s.messages || []).length})`,
+        updateInput: this.state.updateInputs[s.id] || '',
+        handleUpdateInput: (e) => this.setState((st) => ({ updateInputs: { ...st.updateInputs, [s.id]: e.target.value } })),
+        submitUpdate: (e) => {
+          e.preventDefault();
+          const text = (this.state.updateInputs[s.id] || '').trim();
+          if (!text) return;
+          this.addSessionMessage(s.id, text);
+          this.setState((st) => ({ updateInputs: { ...st.updateInputs, [s.id]: '' } }));
+        },
+        id: s.id,
+        apptBooked: !!s.apptBooked,
+        sold: !!s.sold,
+        toggleAppt: () => {
+          const newBooked = !s.apptBooked;
+          this.updateChatSessionMeta(s.id, { apptBooked: newBooked });
+          if (newBooked) this.setState({ reminderSessionId: s.id });
+        },
+        viewReminder: () => this.setState({ reminderSessionId: s.id }),
+        toggleSold: () => {
+          const newSold = !s.sold;
+          this.updateChatSessionMeta(s.id, { sold: newSold });
+          if (newSold) this.setState({ receiptSessionId: s.id });
+        },
+        viewReceipt: () => this.setState({ receiptSessionId: s.id }),
+        apptLabel: s.apptBooked ? '✓ Booked' : 'Mark Booked',
+        soldLabel: s.sold ? '✓ Sold' : 'Mark Sold',
+        apptButtonStyle: {
+          background: s.apptBooked ? '#2E2013' : 'none',
+          color: s.apptBooked ? '#FBF8F3' : '#6B5645',
+          border: '1px solid ' + (s.apptBooked ? '#2E2013' : '#BBA88F'),
+          fontSize: '12px', padding: '6px 10px', cursor: 'pointer', whiteSpace: 'nowrap'
+        },
+        soldButtonStyle: {
+          background: s.sold ? '#3F6B45' : 'none',
+          color: s.sold ? '#FBF8F3' : '#6B5645',
+          border: '1px solid ' + (s.sold ? '#3F6B45' : '#BBA88F'),
+          fontSize: '12px', padding: '6px 10px', cursor: 'pointer', whiteSpace: 'nowrap'
+        },
+        statusLabel: s.sold ? 'Sold' : (s.claimed ? (s.hot ? 'Hot · Claimed' : 'Claimed') : 'New'),
+        rowStyle: { background: s.sold ? '#EEF3EC' : (s.hot ? '#FBF1EE' : 'transparent') },
+        depositAmount: s.depositAmount || '',
+        depositPaid: !!s.depositPaid,
+        handleDepositAmountChange: (e) => this.updateChatSessionMeta(s.id, { depositAmount: e.target.value }),
+        toggleDepositPaid: () => this.updateChatSessionMeta(s.id, { depositPaid: !s.depositPaid }),
+        depositPaidLabel: s.depositPaid ? '✓ Paid' : 'Mark Paid',
+        depositPaidButtonStyle: {
+          background: s.depositPaid ? '#3F6B45' : 'none',
+          color: s.depositPaid ? '#FBF8F3' : '#6B5645',
+          border: '1px solid ' + (s.depositPaid ? '#3F6B45' : '#BBA88F'),
+          fontSize: '12px', padding: '6px 10px', cursor: 'pointer', whiteSpace: 'nowrap'
+        },
+        paymentAmount: s.paymentAmount || '',
+        paid: !!s.paid,
+        handlePaymentAmountChange: (e) => this.updateChatSessionMeta(s.id, { paymentAmount: e.target.value }),
+        togglePaid: () => this.updateChatSessionMeta(s.id, { paid: !s.paid }),
+        paidLabel: s.paid ? '✓ Paid' : 'Mark Paid',
+        paidButtonStyle: {
+          background: s.paid ? '#3F6B45' : 'none',
+          color: s.paid ? '#FBF8F3' : '#6B5645',
+          border: '1px solid ' + (s.paid ? '#3F6B45' : '#BBA88F'),
+          fontSize: '12px', padding: '6px 10px', cursor: 'pointer', whiteSpace: 'nowrap'
+        },
+        serviceCount: s.serviceCount || '',
+        servicesReceived: s.servicesReceived || '',
+        handleServiceCountChange: (e) => this.updateChatSessionMeta(s.id, { serviceCount: e.target.value }),
+        handleServicesReceivedChange: (e) => this.updateChatSessionMeta(s.id, { servicesReceived: e.target.value }),
+        totalPaid: (
+          (s.depositPaid ? (parseFloat(String(s.depositAmount).replace(/[^0-9.]/g, '')) || 0) : 0) +
+          (s.paid ? (parseFloat(String(s.paymentAmount).replace(/[^0-9.]/g, '')) || 0) : 0)
+        ).toFixed(2),
+        startNewLead: () => this.startNewLead(s.id),
+        hasPastHistory: (s.history || []).length > 0,
+        historyExpanded: !!this.state.expandedHistory[s.id],
+        toggleHistory: () => this.toggleHistory(s.id),
+        historyToggleLabel: this.state.expandedHistory[s.id] ? 'Hide past history' : `Past history (${(s.history || []).length})`,
+        pastHistory: (s.history || []).map((h, idx) => ({ ...h, _idx: idx })).reverse().map((h) => ({
+          dateLabel: new Date(h.archivedAt).toLocaleDateString(),
+          leadGoal: h.leadGoal || '\u2014', leadDate: h.leadDate || '\u2014', leadBudget: h.leadBudget || '\u2014',
+          statusLabel: h.sold ? 'Sold' : (h.apptBooked ? 'Booked' : 'Not sold'),
+          depositAmount: h.depositPaid ? h.depositAmount : null,
+          paymentAmount: h.paid ? h.paymentAmount : null,
+          servicesReceived: h.servicesReceived || '\u2014',
+          notes: h.notes || '',
+          messages: (h.messages || []).map((m) => ({ ...m, bubbleStyle: this.messageBubbleStyle(m) })),
+          restore: () => this.restorePastEntry(s.id, h._idx)
+        })),
+        ...this.buildTaskInfo(s),
+        smsHrefBlank: 'sms:' + (s.leadPhone || '').replace(/\D/g, ''),
+        assistOpen: !!this.state.assistOpen[s.id],
+        toggleAssist: () => this.toggleAssist(s.id),
+        assistInput: this.state.assistInput[s.id] || '',
+        handleAssistInputChange: (e) => this.handleAssistInputChange(s.id, e),
+        assistLoading: !!this.state.assistLoading[s.id],
+        assistSendLabel: this.state.assistLoading[s.id] ? '…' : 'Ask',
+        assistThread: (this.state.assistThreads[s.id] || []).map((m) => ({
+          ...m,
+          bubbleStyle: m.from === 'employee'
+            ? { alignSelf: 'flex-end', background: '#2E2013', color: '#FBF8F3', padding: '10px 14px', fontSize: '13px', lineHeight: 1.5, maxWidth: '85%' }
+            : { alignSelf: 'flex-start', background: '#F3EBE0', color: '#2E2013', padding: '10px 14px', fontSize: '13px', lineHeight: 1.5, maxWidth: '85%' }
+        })),
+        submitAssist: (e) => { e.preventDefault(); this.sendAssistMessage(s.id, s); },
+        assistTextHref: (() => {
+          const last = (this.state.assistThreads[s.id] || []).slice().reverse().find((m) => m.from === 'ev');
+          return last ? `sms:${(s.leadPhone || '').replace(/\D/g, '')}?body=${encodeURIComponent(last.text)}` : '';
+        })()
+      }));
+    } catch (e) {}
+
+    return {
+      employeeUnlocked: this.state.employeeUnlocked,
+      employeePasswordInput: this.state.employeePasswordInput,
+      employeePasswordError: this.state.employeePasswordError,
+      handleEmployeePasswordChange: this.handleEmployeePasswordChange,
+      submitEmployeePassword: this.submitEmployeePassword,
+      hasBookings: employeeBookings.length > 0,
+      employeeBookings,
+      browserOpen: this.state.browserOpen,
+      browserUrlInput: this.state.browserUrlInput,
+      browserSrc: this.state.browserSrc,
+      toggleBrowser: this.toggleBrowser,
+      handleBrowserUrlChange: this.handleBrowserUrlChange,
+      submitBrowserUrl: this.submitBrowserUrl,
+      showUndoDelete: this.state.showUndoDelete,
+      undoDeleteChatSession: this.undoDeleteChatSession,
+      handleAddLead: this.handleAddLead,
+      hasHistory: historySessions.length > 0,
+      allLeadsTable: historySessions,
+      downloadSpreadsheet: () => this.downloadSpreadsheetCsv(historySessions),
+      totalCollected: (
+        historySessions.filter((s) => s.paid).reduce((sum, s) => sum + (parseFloat(String(s.paymentAmount).replace(/[^0-9.]/g, '')) || 0), 0) +
+        historySessions.filter((s) => s.depositPaid).reduce((sum, s) => sum + (parseFloat(String(s.depositAmount).replace(/[^0-9.]/g, '')) || 0), 0)
+      ).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+      searchQuery: this.state.searchQuery,
+      handleSearchChange: this.handleSearchChange,
+      newLeadSessions: historySessions.filter((s) => !s.claimed && matchesSearch(s)),
+      claimedLeadSessions: historySessions.filter((s) => s.claimed && matchesSearch(s)).sort((a, b) => (b.hot === a.hot ? 0 : b.hot ? 1 : -1)),
+      referralGroups: (() => {
+        const referralSessionsAll = historySessions.filter((s) => s.leadSource === 'Referral');
+        const groupsMap = {};
+        referralSessionsAll.forEach((s) => {
+          const key = (s.referrerPhone && s.referrerPhone.trim()) || `${s.referrerFirstName || ''} ${s.referrerLastName || ''}`.trim() || `unknown-${s.dateLabel}`;
+          if (!groupsMap[key]) groupsMap[key] = [];
+          groupsMap[key].push(s);
+        });
+        return Object.entries(groupsMap).map(([key, sessions]) => {
+          const first = sessions[0];
+          const updateReferrerAll = (patch) => sessions.forEach((s) => this.updateChatSessionMeta(s.id, patch));
+          return {
+            key,
+            referrerFirstName: first.referrerFirstName,
+            referrerLastName: first.referrerLastName,
+            referrerPhone: first.referrerPhone,
+            referrerTelHref: first.referrerTelHref,
+            handleReferrerFirstNameChange: (e) => updateReferrerAll({ referrerFirstName: e.target.value }),
+            handleReferrerLastNameChange: (e) => updateReferrerAll({ referrerLastName: e.target.value }),
+            handleReferrerPhoneChange: (e) => updateReferrerAll({ referrerPhone: e.target.value }),
+            referralRewardGiven: first.referralRewardGiven,
+            toggleReferralReward: () => updateReferrerAll({ referralRewardGiven: !first.referralRewardGiven }),
+            referralRewardLabel: first.referralRewardGiven ? '✓ Reward Given' : 'Mark Reward Given',
+            referralRewardButtonStyle: {
+              background: first.referralRewardGiven ? '#3F6B45' : 'none',
+              color: first.referralRewardGiven ? '#FBF8F3' : '#6B5645',
+              border: '1px solid ' + (first.referralRewardGiven ? '#3F6B45' : '#BBA88F'),
+              fontSize: '12px', padding: '6px 10px', cursor: 'pointer', whiteSpace: 'nowrap'
+            },
+            referrals: sessions
+          };
+        });
+      })(),
+      hasReferrals: historySessions.some((s) => s.leadSource === 'Referral'),
+      receiptDownloading: this.state.receiptDownloading,
+      receiptDownloadLabel: this.state.receiptDownloading ? 'Preparing…' : 'Download Receipt Image',
+      setReceiptRef: this.setReceiptRef,
+      closeReceipt: this.closeReceipt,
+      stopClickReceipt: (e) => e.stopPropagation(),
+      downloadReceipt: this.downloadReceipt,
+      receiptData: (() => {
+        const r = historySessions.find((s) => s.id === this.state.receiptSessionId);
+        if (!r) return null;
+        const depositNum = r.depositPaid ? (parseFloat(String(r.depositAmount).replace(/[^0-9.]/g, '')) || 0) : 0;
+        const paymentNum = r.paid ? (parseFloat(String(r.paymentAmount).replace(/[^0-9.]/g, '')) || 0) : 0;
+        return {
+          name: r.leadName, phone: r.leadPhone,
+          service: r.servicesReceived || r.leadGoal,
+          sessionDate: r.leadDate,
+          depositAmount: r.depositPaid ? depositNum.toFixed(2) : null,
+          paymentAmount: r.paid ? paymentNum.toFixed(2) : null,
+          total: (depositNum + paymentNum).toFixed(2),
+          issuedOn: new Date().toLocaleDateString(),
+          receiptNumber: String(r.id).slice(-6).toUpperCase()
+        };
+      })(),
+      reminderDownloading: this.state.reminderDownloading,
+      reminderDownloadLabel: this.state.reminderDownloading ? 'Preparing…' : 'Download Reminder Image',
+      setReminderRef: this.setReminderRef,
+      closeReminder: this.closeReminder,
+      downloadReminder: this.downloadReminder,
+      reminderData: (() => {
+        const r = historySessions.find((s) => s.id === this.state.reminderSessionId);
+        if (!r) return null;
+        const depositNum = r.depositPaid ? (parseFloat(String(r.depositAmount).replace(/[^0-9.]/g, '')) || 0) : 0;
+        const budgetNum = parseFloat(String(r.leadBudget).replace(/[^0-9.]/g, '')) || 0;
+        const balance = budgetNum > 0 ? Math.max(budgetNum - depositNum, 0).toFixed(2) : (depositNum > 0 ? depositNum.toFixed(2) : null);
+        return {
+          name: r.leadName, phone: r.leadPhone,
+          service: r.servicesReceived || r.leadGoal,
+          sessionDate: r.leadDate,
+          depositAmount: r.depositPaid ? depositNum.toFixed(2) : null,
+          balance
+        };
+      })(),
+      hasNewLeads: historySessions.some((s) => !s.claimed),
+      hasClaimedLeads: historySessions.some((s) => s.claimed)
+    };
+  }
+}
+</script>
+</body>
+</html>
