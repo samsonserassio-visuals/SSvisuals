@@ -182,7 +182,7 @@ image-slot{border-radius:14px;overflow:hidden;display:block}
       <span style="position:absolute;left:16px;bottom:16px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#FBF8F3;background:rgba(20,20,20,0.65);padding:6px 10px">Couples &amp; Portraits</span>
     </div>
     <div style="position:relative;aspect-ratio:4/5;background:#F3EBE0">
-      <image-slot id="portfolio-families" shape="rect" style="width:100%;height:100%" placeholder="Families — upload your work" aria-label="Families portfolio placeholder" src="uploads/DSC07385.JPG"></image-slot>
+      <image-slot id="portfolio-families" shape="rect" style="width:100%;height:100%" placeholder="Families — upload your work" aria-label="Families portfolio placeholder" src="./DSC07385.JPG"></image-slot>
       <span style="position:absolute;left:16px;bottom:16px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#FBF8F3;background:rgba(20,20,20,0.65);padding:6px 10px">Families</span>
     </div>
     <div style="position:relative;aspect-ratio:4/5;background:#F3EBE0">
@@ -190,14 +190,14 @@ image-slot{border-radius:14px;overflow:hidden;display:block}
       <span style="position:absolute;left:16px;bottom:16px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#FBF8F3;background:rgba(20,20,20,0.65);padding:6px 10px">Events &amp; Quinceañeras</span>
     </div>
     <div style="position:relative;aspect-ratio:4/5;background:#F3EBE0">
-      <image-slot id="portfolio-automotive" shape="rect" style="width:100%;height:100%" placeholder="Automotive — upload your work" aria-label="Automotive portfolio placeholder" src="uploads/DSC03802.JPG"></image-slot>
+      <image-slot id="portfolio-automotive" shape="rect" style="width:100%;height:100%" placeholder="Automotive — upload your work" aria-label="Automotive portfolio placeholder" src="./DSC03802.JPG"></image-slot>
       <span style="position:absolute;left:16px;bottom:16px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#FBF8F3;background:rgba(20,20,20,0.65);padding:6px 10px">Automotive</span>
     </div>
     <div style="position:relative;aspect-ratio:4/5;background:#F3EBE0">
       <image-slot id="portfolio-extra1" shape="rect" style="width:100%;height:100%" placeholder="Upload your work" aria-label="Additional portfolio placeholder" src="./dsc03709-msjydsuh-2mj0.jpg"></image-slot>
     </div>
     <div style="position:relative;aspect-ratio:4/5;background:#F3EBE0">
-      <image-slot id="portfolio-extra2" shape="rect" style="width:100%;height:100%" placeholder="Upload your work" aria-label="Additional portfolio placeholder" src="uploads/DSC04845.jpg"></image-slot>
+      <image-slot id="portfolio-extra2" shape="rect" style="width:100%;height:100%" placeholder="Upload your work" aria-label="Additional portfolio placeholder" src="./DSC04845.jpg"></image-slot>
     </div>
   </div>
 </section>
@@ -365,7 +365,7 @@ image-slot{border-radius:14px;overflow:hidden;display:block}
     <sc-for list="{{ services }}" as="svc" hint-placeholder-count="5">
       <div style="background:#FBF8F3;border:1px solid #E9DCC7;display:flex;flex-direction:column;flex:0 0 600px;scroll-snap-align:start">
         <sc-if value="{{ svc.id === 'couples' }}" hint-placeholder-val="{{ false }}">
-          <image-slot id="svc-{{ svc.id }}" shape="rect" style="width:100%;aspect-ratio:4/3" placeholder="{{ svc.title }}" aria-label="{{ svc.title }} placeholder photo" src="uploads/DSC00817.JPG"></image-slot>
+          <image-slot id="svc-{{ svc.id }}" shape="rect" style="width:100%;aspect-ratio:4/3" placeholder="{{ svc.title }}" aria-label="{{ svc.title }} placeholder photo" src="./DSC00817.JPG"></image-slot>
         </sc-if>
         <sc-if value="{{ svc.id !== 'couples' }}" hint-placeholder-val="{{ true }}">
           <image-slot id="svc-{{ svc.id }}" shape="rect" style="width:100%;aspect-ratio:4/3" placeholder="{{ svc.title }}" aria-label="{{ svc.title }} placeholder photo"></image-slot>
@@ -833,7 +833,7 @@ class Component extends DCLogic {
       passwordError: this.state.passwordError,
       galleryError: this.state.galleryError,
       squareBookingUrl: 'https://square.site/book/L5YY89GYCTVNR/ssvisuals',
-      pixiesetUrl: this.props.pixiesetUrl || '',
+      pixiesetUrl: this.props.pixiesetUrl || 'https://galleries.pixieset.com/collections',
       youtubeUrl: this.props.youtubeUrl || '',
       sponsorshipVenmo: this.props.sponsorshipVenmo || '',
       sponsorshipCashApp: this.props.sponsorshipCashApp || '',
