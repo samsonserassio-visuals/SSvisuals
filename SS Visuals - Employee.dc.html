@@ -14,6 +14,22 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&amp;family=Jost:wght@300;400;500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
 <script src="./image-slot.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
+<script>
+if (!window.firebase.apps.length) {
+  window.firebase.initializeApp({
+    apiKey: "AIzaSyA64SecxENIJxYf2Pb3vjotuZs1T1CAZQs",
+    authDomain: "ssvisuals-f3aef.firebaseapp.com",
+    projectId: "ssvisuals-f3aef",
+    storageBucket: "ssvisuals-f3aef.firebasestorage.app",
+    messagingSenderId: "31553698942",
+    appId: "1:31553698942:web:6b0e5787039642360cec2f",
+    measurementId: "G-F426VW00SG"
+  });
+}
+window.ssvisualsDb = window.firebase.firestore();
+</script>
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#FBF8F3;font-family:'Jost',sans-serif;text-wrap:pretty}
@@ -502,7 +518,7 @@ image-slot{border-radius:14px;overflow:hidden;display:block}
       <div style="background:#2E2013;padding:10px 12px;display:flex;align-items:center;gap:8px;flex-shrink:0">
         <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.05em;text-transform:uppercase;color:#BBA88F;flex-shrink:0">Web</span>
         <form onsubmit="{{ submitBrowserUrl }}" style="flex:1;display:flex">
-          <input type="text" value="{{ browserUrlInput }}" onchange="{{ handleBrowserUrlChange }}" placeholder="Search Google or enter a URL" style="flex:1;padding:7px 10px;border:none;font-size:12px;color:#2E2013;background:#FBF8F3">
+          <input type="text" value="{{ browserUrlInput }}" onchange="{{ handleBrowserUrlChange }}" placeholder="Search Bing or enter a URL" style="flex:1;padding:7px 10px;border:none;font-size:12px;color:#2E2013;background:#FBF8F3">
         </form>
         <button onclick="{{ toggleBrowser }}" aria-label="Close browser" style="background:none;border:none;color:#FBF8F3;font-size:18px;cursor:pointer;line-height:1;flex-shrink:0">×</button>
       </div>
@@ -537,7 +553,7 @@ class Component extends DCLogic {
   state = {
     employeeUnlocked: false, employeePasswordInput: '', employeePasswordError: false,
     showUndoDelete: false, openCallScriptId: null, updateInputs: {}, expandedConversations: {}, expandedHistory: {}, cancelBookingId: null, searchQuery: '',
-    browserOpen: false, browserUrlInput: 'https://www.google.com', browserSrc: 'https://www.google.com',
+    browserOpen: false, browserUrlInput: 'https://www.bing.com', browserSrc: 'https://www.bing.com',
     receiptSessionId: null, receiptDownloading: false,
     reminderSessionId: null, reminderDownloading: false,
     assistOpen: {}, assistInput: {}, assistThreads: {}, assistLoading: {}
@@ -546,11 +562,55 @@ class Component extends DCLogic {
   toggleConversation = (id) => this.setState((st) => ({ expandedConversations: { ...st.expandedConversations, [id]: !st.expandedConversations[id] } }));
   handleSearchChange = (e) => this.setState({ searchQuery: e.target.value });
   toggleHistory = (id) => this.setState((st) => ({ expandedHistory: { ...st.expandedHistory, [id]: !st.expandedHistory[id] } }));
+
+  _leadsCache = {};
+  _bookingsCache = [];
+  readLeadsSync = () => this._leadsCache;
+  writeLeadsSync = (all) => {
+    if (!window.ssvisualsDb) return;
+    const db = window.ssvisualsDb;
+    Object.keys(all).forEach((id) => db.collection('leads').doc(id).set(all[id]).catch(() => {}));
+    Object.keys(this._leadsCache).forEach((id) => { if (!(id in all)) db.collection('leads').doc(id).delete().catch(() => {}); });
+    this._leadsCache = all;
+    this.forceUpdate();
+  };
+  readBookingsSync = () => this._bookingsCache;
+  writeBookingsSync = (list) => {
+    if (!window.ssvisualsDb) return;
+    const db = window.ssvisualsDb;
+    const ids = list.map((b) => String(b.timestamp));
+    list.forEach((b) => db.collection('bookings').doc(String(b.timestamp)).set(b).catch(() => {}));
+    this._bookingsCache.forEach((b) => { if (!ids.includes(String(b.timestamp))) db.collection('bookings').doc(String(b.timestamp)).delete().catch(() => {}); });
+    this._bookingsCache = list;
+    this.forceUpdate();
+  };
+
+  componentDidMount() {
+    if (window.ssvisualsDb) {
+      const db = window.ssvisualsDb;
+      this._unsubLeads = db.collection('leads').onSnapshot((snap) => {
+        const map = {};
+        snap.forEach((doc) => { map[doc.id] = doc.data(); });
+        this._leadsCache = map;
+        this.forceUpdate();
+      }, () => {});
+      this._unsubBookings = db.collection('bookings').onSnapshot((snap) => {
+        const list = [];
+        snap.forEach((doc) => list.push(doc.data()));
+        this._bookingsCache = list;
+        this.forceUpdate();
+      }, () => {});
+    }
+  }
+  componentWillUnmount() {
+    if (this._unsubLeads) this._unsubLeads();
+    if (this._unsubBookings) this._unsubBookings();
+  }
+
   startNewLead = (id) => {
     if (!window.confirm('Archive this lead\'s current info and reset it as a new lead?')) return;
-    try {
-      const raw = localStorage.getItem('ssvisuals_chat_history');
-      const all = raw ? JSON.parse(raw) : {};
+    {
+      const all = { ...this.readLeadsSync() };
       const s = all[id];
       if (!s) return;
       const archived = {
@@ -572,15 +632,13 @@ class Component extends DCLogic {
         messages: [],
         updatedAt: Date.now()
       };
-      localStorage.setItem('ssvisuals_chat_history', JSON.stringify(all));
-      this.forceUpdate();
-    } catch (e) {}
+      this.writeLeadsSync(all);
+    }
   };
   restorePastEntry = (id, idx) => {
     if (!window.confirm('Restore this as the current lead? It will replace the current in-progress info.')) return;
-    try {
-      const raw = localStorage.getItem('ssvisuals_chat_history');
-      const all = raw ? JSON.parse(raw) : {};
+    {
+      const all = { ...this.readLeadsSync() };
       const s = all[id];
       if (!s || !s.history || !s.history[idx]) return;
       const entry = s.history[idx];
@@ -598,9 +656,8 @@ class Component extends DCLogic {
         history: newHistory,
         updatedAt: Date.now()
       };
-      localStorage.setItem('ssvisuals_chat_history', JSON.stringify(all));
-      this.forceUpdate();
-    } catch (e) {}
+      this.writeLeadsSync(all);
+    }
   };
   setReceiptRef = (el) => { this._receiptEl = el; };
   closeReceipt = () => this.setState({ receiptSessionId: null });
@@ -635,19 +692,16 @@ class Component extends DCLogic {
     let url = this.state.browserUrlInput.trim();
     if (!url) return;
     if (!/^https?:\/\//i.test(url)) {
-      url = (/\.\w{2,}/.test(url) && !/\s/.test(url)) ? `https://${url}` : `https://www.google.com/search?q=${encodeURIComponent(url)}`;
+      url = (/\.\w{2,}/.test(url) && !/\s/.test(url)) ? `https://${url}` : `https://www.bing.com/search?q=${encodeURIComponent(url)}`;
     }
     this.setState({ browserSrc: url, browserUrlInput: url });
   };
 
   toggleCancelBooking = (timestamp) => this.setState((st) => ({ cancelBookingId: st.cancelBookingId === timestamp ? null : timestamp }));
   confirmDeleteBooking = (timestamp) => {
-    try {
-      const raw = localStorage.getItem('ssvisuals_bookings');
-      const all = raw ? JSON.parse(raw) : [];
-      localStorage.setItem('ssvisuals_bookings', JSON.stringify(all.filter((b) => b.timestamp !== timestamp)));
-      this.setState({ cancelBookingId: null });
-    } catch (e) {}
+    const all = this.readBookingsSync();
+    this.writeBookingsSync(all.filter((b) => b.timestamp !== timestamp));
+    this.setState({ cancelBookingId: null });
   };
   cancelScriptFor = (b) => `Hi ${b.name || 'there'}, this is Samson with SS Visuals. I'm really sorry, but I have to cancel our ${b.service || 'upcoming'} session${b.date ? ' on ' + b.date : ''}${b.time ? ' at ' + b.time : ''} — something came up on my end and it couldn't be avoided.\n\nI know that's frustrating, and I want to make it right: I'd love to get you rebooked at the front of the line for a new date, plus I'll add a little extra to your session (a few bonus edited photos, on me) for the trouble.\n\nJust let me know a few dates that could work and I'll lock you in right away. Really sorry again, and thank you for understanding!`;
 
@@ -727,16 +781,12 @@ class Component extends DCLogic {
   };
 
   addSessionMessage = (id, text) => {
-    try {
-      const raw = localStorage.getItem('ssvisuals_chat_history');
-      const all = raw ? JSON.parse(raw) : {};
-      if (all[id]) {
-        const messages = [...(all[id].messages || []), { from: 'staff', text: `Update (${new Date().toLocaleDateString()}): ${text}`, timestamp: Date.now() }];
-        all[id] = { ...all[id], messages, updatedAt: Date.now() };
-        localStorage.setItem('ssvisuals_chat_history', JSON.stringify(all));
-        this.forceUpdate();
-      }
-    } catch (e) {}
+    const all = { ...this.readLeadsSync() };
+    if (all[id]) {
+      const messages = [...(all[id].messages || []), { from: 'staff', text: `Update (${new Date().toLocaleDateString()}): ${text}`, timestamp: Date.now() }];
+      all[id] = { ...all[id], messages, updatedAt: Date.now() };
+      this.writeLeadsSync(all);
+    }
   };
   messageBubbleStyle = (m) => m.from === 'staff'
     ? { alignSelf: 'stretch', background: '#FFF9EE', color: '#2E2013', padding: '10px 14px', fontSize: '13px', lineHeight: 1.5, borderLeft: '3px solid #6B5645', fontStyle: 'italic' }
@@ -755,64 +805,48 @@ class Component extends DCLogic {
   };
 
   updateChatSessionMeta = (id, patch) => {
-    try {
-      const raw = localStorage.getItem('ssvisuals_chat_history');
-      const all = raw ? JSON.parse(raw) : {};
-      if (all[id]) {
-        all[id] = { ...all[id], ...patch };
-        localStorage.setItem('ssvisuals_chat_history', JSON.stringify(all));
-        this.forceUpdate();
-      }
-    } catch (e) {}
+    const all = { ...this.readLeadsSync() };
+    if (all[id]) {
+      all[id] = { ...all[id], ...patch };
+      this.writeLeadsSync(all);
+    }
   };
   deleteChatSession = (id) => {
-    try {
-      const raw = localStorage.getItem('ssvisuals_chat_history');
-      const all = raw ? JSON.parse(raw) : {};
-      if (all[id]) this._lastDeletedSession = all[id];
-      delete all[id];
-      localStorage.setItem('ssvisuals_chat_history', JSON.stringify(all));
-      this.setState({ showUndoDelete: true });
-      this.forceUpdate();
-    } catch (e) {}
+    const all = { ...this.readLeadsSync() };
+    if (all[id]) this._lastDeletedSession = all[id];
+    delete all[id];
+    this.writeLeadsSync(all);
+    this.setState({ showUndoDelete: true });
   };
   undoDeleteChatSession = () => {
     if (!this._lastDeletedSession) return;
-    try {
-      const raw = localStorage.getItem('ssvisuals_chat_history');
-      const all = raw ? JSON.parse(raw) : {};
-      all[this._lastDeletedSession.id] = this._lastDeletedSession;
-      localStorage.setItem('ssvisuals_chat_history', JSON.stringify(all));
-      this._lastDeletedSession = null;
-      this.setState({ showUndoDelete: false });
-    } catch (e) {}
+    const all = { ...this.readLeadsSync() };
+    all[this._lastDeletedSession.id] = this._lastDeletedSession;
+    this.writeLeadsSync(all);
+    this._lastDeletedSession = null;
+    this.setState({ showUndoDelete: false });
   };
   handleAddLead = (e) => {
     e.preventDefault();
     const form = e.target;
     const data = new FormData(form);
     const id = 'manual-' + Date.now() + '-' + Math.random().toString(36).slice(2);
-    try {
-      const raw = localStorage.getItem('ssvisuals_chat_history');
-      const all = raw ? JSON.parse(raw) : {};
-      all[id] = {
-        id, updatedAt: Date.now(), messages: [],
-        leadName: data.get('name') || '', leadPhone: data.get('phone') || '',
-        leadGoal: data.get('goal') || '', leadDate: data.get('date') || '', leadBudget: data.get('budget') || ''
-      };
-      localStorage.setItem('ssvisuals_chat_history', JSON.stringify(all));
-      form.reset();
-      this.forceUpdate();
-    } catch (err) {}
+    const all = { ...this.readLeadsSync() };
+    all[id] = {
+      id, updatedAt: Date.now(), messages: [],
+      leadName: data.get('name') || '', leadPhone: data.get('phone') || '',
+      leadGoal: data.get('goal') || '', leadDate: data.get('date') || '', leadBudget: data.get('budget') || ''
+    };
+    this.writeLeadsSync(all);
+    form.reset();
   };
 
   renderVals() {
     const q = this.state.searchQuery.trim().toLowerCase();
     const matchesSearch = (s) => !q || [s.leadName, s.leadPhone, s.leadEmail].some((v) => (v || '').toLowerCase().includes(q));
     let employeeBookings = [];
-    try {
-      const raw = localStorage.getItem('ssvisuals_bookings');
-      const all = raw ? JSON.parse(raw) : [];
+    {
+      const all = this.readBookingsSync();
       employeeBookings = all.map((b) => ({
         ...b,
         dateLabel: new Date(b.timestamp).toLocaleString(),
@@ -822,12 +856,11 @@ class Component extends DCLogic {
         cancelScript: this.cancelScriptFor(b),
         cancelSmsHref: `sms:${(b.phone || '').replace(/\D/g, '')}?body=${encodeURIComponent(this.cancelScriptFor(b))}`
       }));
-    } catch (e) {}
+    }
 
     let historySessions = [];
-    try {
-      const raw = localStorage.getItem('ssvisuals_chat_history');
-      const all = raw ? JSON.parse(raw) : {};
+    {
+      const all = this.readLeadsSync();
       historySessions = Object.values(all).sort((a, b) => b.updatedAt - a.updatedAt).map((s) => ({
         dateLabel: new Date(s.updatedAt).toLocaleString(),
         leadName: s.leadName || '\u2014', leadPhone: s.leadPhone || '',
@@ -989,7 +1022,7 @@ class Component extends DCLogic {
           return last ? `sms:${(s.leadPhone || '').replace(/\D/g, '')}?body=${encodeURIComponent(last.text)}` : '';
         })()
       }));
-    } catch (e) {}
+    }
 
     return {
       employeeUnlocked: this.state.employeeUnlocked,
